@@ -1,0 +1,168 @@
+@extends('layouts/layoutMaster')
+
+@section('title', 'Print - Process Transfer Job Center')
+
+@section('page-script')
+  <script src="{{ asset('assets/js/app-invoice-print.js') }}"></script>
+@endsection
+<style>
+  @media print {
+    body {
+      visibility: hidden;
+    }
+
+    #invoice-print {
+      visibility: visible;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }
+</style>
+
+@section('content')
+
+  <div class="invoice-print p-5" id="invoice-print">
+    <div class="d-flex justify-content-between flex-row">
+      <div class="mb-4">
+        <div class="d-flex svg-illustration mb-3 gap-2">
+          @include('_partials.macros', ['height' => 20, 'withbg' => ''])
+          <span class="app-brand-text fw-bold">Job Center</span>
+        </div>
+        <p class="mb-2">ff-1, silver point complex, near sbi bank
+          Narol, Ahmedabad</p>
+        <p class="mb-2">ahmedabad, Gujarat - 382405</p>
+        <p class="mb-1">city,state- 12345</p>
+        <p class="mb-1">1234567890</p>
+        <p class="mb-0">abc@gmail.com</p>
+        <p class="mb-0">GSTIN : 24AAXFR1338K1ZQ</p>
+      </div>
+      <div>
+        <h4 class="fw-medium mb-2">Service Order No: #ZCPLPO/28</h4>
+        <div class="mb-2 pt-1">
+          <span>Po Date:</span>
+          <span class="fw-medium">24-May-2024</span>
+          </br>
+          </br>
+          Delivery Terms And Condition : <p><b>45 DAYS</b></p>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <div class="card-body">
+      <div class="row p-sm-3 p-0">
+        <div class="col-xl-6 col-md-12 col-sm-5 col-12 mb-xl-0 mb-md-4 mb-sm-0 mb-4">
+          <h6 class="mb-3">Bill To:</h6>
+          <p class="mb-1">ZEDEX CLOTHING PRIVATE LIMITED</p>
+          <p class="mb-1">132/2 Balaji Estate, Near Gautam Furniture Lane, , Isanpur-Narol Highway, Isanpur,</p>
+          <p class="mb-1">Ahmedabad , Gujarat - 382443
+          </p>
+          <p class="mb-1">Phone : 8488879888</p>
+          <p class="mb-0">E-Mail : accounts@zedexclothing.com </p>
+          <p class="mb-0">GSTIN : 24AAACZ2046E1ZP</p>
+        </div>
+
+        <div class="col-xl-6 col-md-12 col-sm-7 col-12">
+
+
+          <div class="col-xl-6 col-md-12 col-sm-5 col-12 mb-xl-0 mb-md-4 mb-sm-0 mb-4">
+            <h6 class="mb-3">Ship To:</h6>
+            <p class="mb-1">ZEDEX CLOTHING PRIVATE LIMITED UNIT-II</p>
+            <p class="mb-1">
+              ZEDEX CLOTHING PRIVATE LIMITED UNIT-II
+              Survey No. 360, Beside IOCL Pump, Near Sindhrej Patia, , Village Ranoda,</p>
+            <p class="mb-1">
+              Dholka , Gujarat - 382225
+            </p>
+            <p class="mb-1">T : 8488879888</p>
+            <p class="mb-0">E-Mail : accounts@zedexclothing.com</p>
+            <p class="mb-0">GSTIN : 24AAACZ2046E1ZP</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive border-top">
+      <table class="table m-0">
+
+        <thead>
+        <tr>
+          <th>Sr.No.</th>
+          <th>Item</th>
+          <th>Description</th>
+          <th>UOM</th>
+          <th>HSN</th>
+          <th>Excess I/W Allow %</th>
+          <th>Qty</th>
+          <th>Rate</th>
+          <th>CGST</th>
+          <th>SGST</th>
+          <th>Taxable Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>1</td>
+          <td class="text-nowrap">BB WOVEN BELT LBL</td>
+          <td class="text-nowrap"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>55.50</td>
+          <td>2.68</td>
+          <th>8.925</th>
+          <th>8.925</th>
+          <td>166.59</td>
+
+        </tr>
+        <tr>
+          <td class="align-top px-4 py-4" colspan="8">
+          </td>
+          <td class="text-end pe-3 py-4" colspan="2">
+            <p class="mb-2 pt-3">Subtotal:</p>
+            <p class="mb-2">IGST Amount:</p>
+            <p class="mb-2">CGST Amount:</p>
+            <p class="mb-2">SGST Amount:</p>
+            <p class="mb-0 pb-3">Total:</p>
+          </td>
+          <td class="ps-2 py-4">
+            <p class="fw-medium mb-2 pt-3">148.74</p>
+            <p class="fw-medium mb-2">0</p>
+            <p class="fw-medium mb-2">8.93</p>
+            <p class="fw-medium mb-2">8.93</p>
+            <p class="fw-medium mb-0 pb-3">166.59</p>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-body mx-3">
+      <div class="row">
+        <div class="col-12">
+          <div style="text-align: end"><b>E. &amp; O.E</b></div>
+          Amount Chargeable (in
+          words)<br><b> One Hundred  and Sixty Six  Rupees .Five Nine Paise Only</b>
+          <br><br>Tax is payable on reverse charge basis: No
+          <br>
+          <b><u>Declaration</u></b><br><b>
+            1. We declare that this Purchase Order shows the actual price of
+            the goods described and that all particulars are true and
+            correct.<br>
+            2. All Disputes are subject to Ahmedabad
+            jurisdiction only.</b><br><br>
+          <div style="text-align: end"><b>For ZEDEX CLOTHING PRIVATE LIMITED</b><br><br><br><b>Authorised
+              Signatory</b></div>
+          <span class="fw-medium">Note:</span>
+          <span></span>
+          <br>
+          <p>*This is a Computer Generated Purchase Order</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+@endsection
+
+
+
