@@ -35,6 +35,10 @@
 
 
 @section('content')
+    @php
+        $requiredHtml = Helper::requiredHtml();
+    @endphp
+
 
     <h4 class="py-3 mb-4">
         <span class="text-muted fw-light float-left">Sales Order /</span> Add
@@ -57,6 +61,7 @@
 
                             <div class="col-md-3">
                                 <label class="form-label" for="SalesOrderDate">Date</label>
+                                {!! $requiredHtml !!}
                                 <input type="date" class="form-control date-picker" id="SalesOrderDate"
                                     name="SalesOrderDate" value="{{ date('Y-m-d') }}" placeholder="YYYY-MM-DD" />
                             </div>
@@ -64,6 +69,7 @@
 
                             <div class="col-md-3">
                                 <label class="form-label" for="CustomerName">Customer Name</label>
+                                {!! $requiredHtml !!}
                                 <select required id="CustomerName" name="CustomerName" class="select2 select21 form-select"
                                     data-allow-clear="true" data-placeholder="Select Customer Name">
                                     <option value="">Select</option>
@@ -77,6 +83,7 @@
 
                             <div class="col-md-3">
                                 <label class="form-label" for="Brand">Brand</label>
+                                {!! $requiredHtml !!}
                                 <select required id="Brand" name="Brand" class="select2 select21 form-select"
                                     data-allow-clear="true" data-placeholder="Select Brand">
                                     <option value="">Select</option>
@@ -88,6 +95,7 @@
 
                             <div class="col-md-3">
                                 <label class="form-label" for="Season">Season</label>
+                                {!! $requiredHtml !!}
                                 <select required id="Season" name="Season" class="select2 select21 form-select"
                                     data-allow-clear="true" data-placeholder="Select Season">
                                     <option value="">Select</option>
@@ -133,6 +141,7 @@
                                     <div class="col-12 col-md-6 col-lg-6">
                                         <label class="form-label" for="StyleNo">Style No &nbsp;
                                         </label>
+                                        {!! $requiredHtml !!}
                                         <div class="input-group">
                                             <select class="col-lg-3 select2 form-select"
                                                 style="min-width: 200px !important;" name="StyleNo"
@@ -151,18 +160,21 @@
 
                                     <div class="col-12 col-md-6">
                                         <label class="form-label" for="CustomerStyleNo">Customer Style No</label>
+                                        {!! $requiredHtml !!}
                                         <input required type="text" id="CustomerStyleNo" name="CustomerStyleNo"
                                             class="form-control" placeholder="Customer Style No" />
                                     </div>
 
                                     <div class="col-12 col-md-6">
                                         <label class="form-label" for="Price">Rate</label>
+                                        {!! $requiredHtml !!}
                                         <input required type="text" id="Price" name="Price"
                                             class="form-control" placeholder="Rate" />
                                     </div>
 
                                     <div class="col-12 col-md-6">
                                         <label class="form-label" for="TotalQty">Total Qty</label>
+                                        {!! $requiredHtml !!}
                                         <div class="input-group">
                                             <input required type="number" id="TotalQty" name="TotalQty"
                                                 class="form-control" placeholder="Total Qty" />
@@ -186,6 +198,7 @@
 
                                     <div class="col-12 col-md-6 col-lg-6">
                                         <label class="form-label" for="ShipDate">Ship Date</label>
+                                        {!! $requiredHtml !!}
                                         <input type="date" class="form-control date-picker" id="ShipDate"
                                             name="ShipDate" placeholder="YYYY-MM-DD" />
                                     </div>
@@ -414,7 +427,8 @@
                                 </div>
                                 <label class="form-label" for="parameterDataSaperation">Insert Size Values here</label>
                                 <input type="text" id="parameterDataSaperation" class="form-control mb-5"
-                                    onkeyup="updateTable(this.value)" name="parameterDataSaperation">
+                                    onkeyup="updateTable(this.value)" placeholder="28,30,32,34,36 / s,m,l,xl,xxl"
+                                    name="parameterDataSaperation">
 
                                 <div class="col-12 col-md-6" hidden>
                                     <label class="form-label" for="StyelParameterId">Style Parameter Id</label>
@@ -454,6 +468,7 @@
 
     function updateTable(input) {
         var rowCount = 1;
+        var totalQty = $('#TotalQty').val();
         // Create a div to contain the table
         const tableContainer = document.createElement('div');
         const numbers = input.split(',');
@@ -513,6 +528,7 @@
             const inputRatio = document.createElement('input');
             inputRatio.type = 'text';
             inputRatio.placeholder = 'Ratio';
+            inputRatio.setAttribute('onkeyup', `updateQuantities(${rowCount})`);
             inputRatio.name = `Ratio[${rowCount}][${index}]`;
             inputRatio.className = 'form-control';
             dataCellRatio.appendChild(inputRatio);
@@ -524,7 +540,9 @@
             inputQty.type = 'text';
             inputQty.placeholder = 'Qty';
             inputQty.name = `Qty[${rowCount}][${index}]`;
-            inputQty.className = 'form-control';
+            inputQty.className = 'form-control qty';
+            inputQty.setAttribute('data-row', rowCount);
+            inputQty.setAttribute('data-col', index);
             dataCellQty.appendChild(inputQty);
         });
 
@@ -533,7 +551,7 @@
         inputHeaderLast.type = 'text';
         inputHeaderLast.value = `total`;
         inputHeaderLast.readOnly = true;
-        inputHeaderLast.className = 'form-control';
+        inputHeaderLast.className = 'form-control total';
         thead.appendChild(inputHeaderLast);
 
         // Add empty cell in the data row
@@ -541,11 +559,27 @@
         const inputLast = document.createElement('input');
         inputLast.type = 'text';
         inputLast.name = `Total[${rowCount}]`;
+        inputLast.value = totalQty;
         inputLast.placeholder = 'Total';
         inputLast.style.height = '78px'; // Fixing the height
         inputLast.className = 'form-control';
+        inputLast.setAttribute('data-row', rowCount);
+        inputLast.setAttribute('onkeyup', `updateQuantities(${rowCount})`);
         dataCellLast.rowSpan = 2;
         dataCellLast.appendChild(inputLast);
+
+        // const dataCellDelete = dataRow.insertCell();
+        // const inputLastDelete = document.createElement('input');
+        // inputLastDelete.type = 'text';
+        // inputLastDelete.name = `Total[${rowCount}]`;
+        // inputLastDelete.value = totalQty;
+        // inputLastDelete.placeholder = 'Total';
+        // inputLastDelete.style.height = '78px'; // Fixing the height
+        // inputLastDelete.className = 'form-control';
+        // inputLastDelete.setAttribute('data-row', rowCount);
+        // inputLastDelete.setAttribute('onkeyup', `updateQuantities(${rowCount})`);
+        // dataCellDelete.rowSpan = 2;
+        // dataCellDelete.appendChild(inputLastDelete);
 
         // Increment row count for the next row
         rowCount++;
@@ -570,6 +604,7 @@
         const tbodyCount = tbodyElements.length;
         console.log("Number of tbody elements:", tbodyCount);
 
+        newTbody.setAttribute('id', `TableContainer_${tbodyCount+1}`);
 
         rows.forEach((row, rowIndex) => {
             var newparameterIndex = 0;
@@ -580,10 +615,12 @@
             inputs.forEach((input, inputIndex) => {
                 if (input.name.includes('Color')) {
                     input.name = `Color[${tbodyCount+1}]`; // Use color count for index
+                    input.value = '';
                 } else if (input.name.includes('Size')) {
                     input.name = `Size[${tbodyCount+1}][${inputIndex}]`;
                 } else if (input.name.includes('Ratio')) {
                     input.name = `Ratio[${tbodyCount+1}][${newratioIndex}]`;
+                    input.setAttribute('onkeyup', `updateQuantities(${tbodyCount+1})`);
                     newratioIndex++;
                 } else if (input.name.includes('Qty')) {
                     input.name = `Qty[${tbodyCount+1}][${newqtyIndex}]`;
@@ -594,11 +631,31 @@
                     newparameterIndex++;
                 } else if (input.name.includes('Total')) {
                     input.name = `Total[${tbodyCount+1}]`;
+                    input.setAttribute('onkeyup', `updateQuantities(${tbodyCount+1})`);
                 }
             });
         });
 
         table.appendChild(newTbody);
+    }
+
+    function updateQuantities(row) {
+        const totalInput = document.querySelector(`input[name='Total[${row}]']`);
+        const total = parseFloat(totalInput.value) || 0;
+
+        const ratioInputs = document.querySelectorAll(`input[name^='Ratio[${row}]']`);
+        const ratios = Array.from(ratioInputs).map(input => parseFloat(input.value) || 0);
+        const sumOfRatios = ratios.reduce((acc, ratio) => acc + ratio, 0);
+
+        const qtyInputs = document.querySelectorAll(`input[name^='Qty[${row}]']`);
+        qtyInputs.forEach((qtyInput, index) => {
+            const ratio = ratios[index];
+            if (sumOfRatios > 0) {
+                qtyInput.value = Math.round(((ratio / sumOfRatios) * total).toFixed(2));
+            } else {
+                qtyInput.value = '0.00';
+            }
+        });
     }
 
     function checkTotalQty() {
@@ -670,7 +727,8 @@
             }
             if (modelRate === '') {
                 var errorMessage = 'Rate should be filled out';
-                toastr.error(errorMessage);
+
+
             }
         } else {
             $.ajax({
@@ -823,6 +881,7 @@
         });
     }
 
+
     function storeSelectedStyle(redirection) {
 
         // Initialize an empty array to store the data from input fields
@@ -842,6 +901,7 @@
 
             colorData[index] = value;
         });
+
 
         // Extract ratio data
         $('input[name^="Ratio"]').each(function() {
@@ -918,6 +978,8 @@
         var htmlData = '';
 
         var errorCounter = 0;
+        var sameColorCounter = 0;
+        var seenColors = new Set();
 
         $('input[name^="Color"]').each(function() {
             var name = $(this).attr('name');
@@ -931,11 +993,16 @@
                 errorCounter++;
             }
 
-            // Add more validation logic as needed, e.g., check if value is a valid color
+            if (seenColors.has(value)) {
+                sameColorCounter++;
+            } else {
+                seenColors.add(value);
+            }
         });
 
         if (customerName === '' || brand === '' || season === '' || saleOrderDate === '' || styleNo === '' ||
-            customerStyleNo === '' || price === '' || totalQty === '' || shipDate === '' || errorCounter != 0) {
+            customerStyleNo === '' || price === '' || totalQty === '' || shipDate === '' || errorCounter != 0 ||
+            parameterDataSaperation === '' || sameColorCounter != 0) {
             $('#validationErrorMessage').remove();
             if (customerName === '' || brand === '' || season === '' || saleOrderDate === '') {
                 var errorMessage = 'Primary Information should be filled Out : ';
@@ -947,9 +1014,7 @@
 
                 toastr.error(errorMessage);
             }
-            if (errorCounter != 0) {
-                toastr.error('Color Should be fill out!!');
-            }
+
             if (styleNo === '') {
                 var errorMessage = 'Style No should be filled out';
                 toastr.error(errorMessage);
@@ -965,6 +1030,26 @@
             if (totalQty === '') {
                 var errorMessage = 'Qty should be filled out';
                 toastr.error(errorMessage);
+            }
+            if (totalQty !== '') {
+                if (parameterDataSaperation === '') {
+                    toastr.error('Parameter should be added before moving further');
+                    $('.ValidateModelForTotalQty').attr('id', 'addSize');
+                    $('#addSize').modal('show');
+                    $('.ValidateModelForTotalQty').removeAttr('id');
+                }
+                if (errorCounter != 0) {
+                    toastr.error('Color Should be fill out!!');
+                    $('.ValidateModelForTotalQty').attr('id', 'addSize');
+                    $('#addSize').modal('show');
+                    $('.ValidateModelForTotalQty').removeAttr('id');
+                }
+                if (sameColorCounter != 0) {
+                    toastr.error('Color Should be Different!!');
+                    $('.ValidateModelForTotalQty').attr('id', 'addSize');
+                    $('#addSize').modal('show');
+                    $('.ValidateModelForTotalQty').removeAttr('id');
+                }
             }
             if (shipDate === '') {
                 var errorMessage = 'Ship Date should be filled out';
@@ -1117,7 +1202,7 @@
 <script>
     function getItemParameter() {
         var StyleNo = document.getElementById('StyleNo').value;
-		$("#StyleDetails").html('');
+        $("#StyleDetails").html('');
         $("#Price").val(0);
         $.ajax({
             type: 'POST',
@@ -1177,7 +1262,7 @@
 {{-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> --}}
 
 <!-- jQuery script to calculate and update totals -->
-<script>
+{{-- <script>
     $(document).ready(function() {
         // Function to calculate the sum of each column and update the total row
         function calculateColumnSum() {
@@ -1209,4 +1294,4 @@
                 calculateColumnSum();
             });
     });
-</script>
+</script> --}}

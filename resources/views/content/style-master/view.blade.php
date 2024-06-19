@@ -59,13 +59,13 @@
                                     <input required type="text" id="Style_No" name="Style_No" class="form-control"
                                         placeholder="Style No" value="{{ $StyleMaster->style_no }}" readonly />
                                 </div>
-								 <div class="col-md-3">
+                                <div class="col-md-3">
                                     <label class="form-label" for="Febric">Fabric</label>
                                     <input required type="text" id="Febric" value="{{ $StyleMaster->febric }}"
                                         name="Febric" class="form-control" placeholder="Fabric" readonly />
                                 </div>
-								
-								<div class="col-md-3">
+
+                                <div class="col-md-3">
                                     <label class="form-label" for="Brand">Brand</label>
                                     <input required type="text" id="Brand"
                                         value="{{ $StyleMaster->Brand->name ?? '' }}" name="Brand" class="form-control"
@@ -78,7 +78,7 @@
                                         name="Customer" class="form-control" placeholder="Customer" readonly />
                                 </div>
 
-                               
+
 
                                 <div class="col-md-3">
                                     <label class="form-label" for="Category">Category</label>
@@ -93,12 +93,13 @@
                                         value="{{ $StyleMaster->StyleSubCategory->name ?? '' }}" class="form-control"
                                         placeholder="Sub-category" readonly />
                                 </div>
-								
+
                                 <div class="col-md-3">
-                                  <label class="form-label" for="Demographic">Demographic</label>
-                                  <input required type="text" id="Demographic" value="{{ $StyleMaster->Demographic->name ?? '' }}"
-                                      name="Demographic" class="form-control" placeholder="Demographic" readonly />
-                              </div>
+                                    <label class="form-label" for="Demographic">Demographic</label>
+                                    <input required type="text" id="Demographic"
+                                        value="{{ $StyleMaster->Demographic->name ?? '' }}" name="Demographic"
+                                        class="form-control" placeholder="Demographic" readonly />
+                                </div>
 
                                 <div class="col-md-3">
                                     <label class="form-label" for="Fit">Fit</label>
@@ -109,26 +110,28 @@
 
                                 <div class="col-md-3">
                                     <label class="form-label" for="Season">Season</label>
-                                    <input required type="text" id="Season" value="{{ $StyleMaster->Season->name }}"
-                                        name="Season" class="form-control" placeholder="Season" readonly />
+                                    <input required type="text" id="Season"
+                                        value="{{ $StyleMaster->Season->name }}" name="Season" class="form-control"
+                                        placeholder="Season" readonly />
                                 </div>
 
-								@if (!empty($StyleMaster->designer_id))
+                                @if (!empty($StyleMaster->designer_id))
+                                    <div class="col-md-3">
+                                        <label class="form-label" for="Designer">Designer</label>
+                                        <input required type="text" id="Designer"
+                                            value="{{ $StyleMaster->Designer->company_name }}-{{ $StyleMaster->Designer->person_name }}"
+                                            name="Designer" class="form-control" placeholder="Designer" readonly />
+                                    </div>
+                                @else
+                                    <div class="col-md-3">
+                                        <label class="form-label" for="Designer">Designer</label>
+                                        <input required type="text" value="{{ $StyleMaster->designer_name }}"
+                                            id="Designer" name="DesignerName" class="form-control"
+                                            placeholder="Select Designer" readonly />
+                                    </div>
+                                @endif
+
                                 <div class="col-md-3">
-                                    <label class="form-label" for="Designer">Designer</label>
-                                    <input required type="text" id="Designer"
-                                        value="{{ $StyleMaster->Designer->company_name }}-{{ $StyleMaster->Designer->person_name }}"
-                                        name="Designer" class="form-control" placeholder="Designer" readonly />
-                                </div>
-								@else
-								  <div class="col-md-3">
-                                            <label class="form-label" for="Designer">Designer</label>
-                                            <input required type="text" value="{{$StyleMaster->designer_name}}" id="Designer" name="DesignerName"
-                                                class="form-control" placeholder="Select Designer" readonly/>
-                                        </div>
-                                    @endif
-								
-								 <div class="col-md-3">
                                     <label class="form-label" for="Merchant">Merchant</label>
                                     <select required id="Merchant" name="Merchant" class="select2 select21 form-select"
                                         data-allow-clear="true" data-placeholder="Select Merchant">
@@ -141,7 +144,7 @@
 
                                     </select>
                                 </div>
-								
+
                                 <div class="col-md-3">
                                     <label class="form-label" for="Color">Color</label>
                                     <input class="form-control" name="Color" placeholder="Color"
@@ -171,138 +174,123 @@
                                     </div>
                                 </div>
 
-                              <div class="row g-3 mt-3">
-                                <div class="col-12 col-lg-12  col-md-12">
-                                  <div class="card">
-                                    <div class="card-header">
-                                      <h4>Process List</h4>
+                                <div class="row g-3 mt-3">
+                                    <div class="col-12 col-lg-12  col-md-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h4>Process List</h4>
+                                            </div>
+                                            <div class="card-body table-responsive pt-0">
+                                                <table class="datatables-basic  table" id="datatable-list-process">
+                                                    <thead class="table-secondary">
+                                                        <tr>
+                                                            <th>Sr No</th>
+                                                            <th>Process</th>
+                                                            <th>Qty</th>
+                                                            <th>Rate</th>
+                                                            <th>Amount</th>
+                                                            <th>Duration</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="dataTableBody">
+                                                        @php
+                                                            $totalQty = 0;
+                                                            $totalRate = 0;
+                                                            $totalValue = 0;
+                                                            $totalDuration = 0;
+                                                        @endphp
+                                                        @foreach ($StyleMaster->StyleMasterProcesses as $StyleMasterProcesses)
+                                                            <tr>
+                                                                <td>{{ $StyleMasterProcesses->sr_no }}</td>
+                                                                <td>{{ $StyleMasterProcesses->ProcessMaster->name ?? '' }}
+                                                                </td>
+                                                                <td>{{ $StyleMasterProcesses->qty }}</td>
+                                                                <td>{{ $StyleMasterProcesses->rate }}</td>
+                                                                <td>{{ $StyleMasterProcesses->value }}</td>
+                                                                <td>{{ $StyleMasterProcesses->duration }}</td>
+                                                            </tr>
+                                                            @php
+                                                                $totalQty += $StyleMasterProcesses->qty;
+                                                                $totalRate += $StyleMasterProcesses->rate;
+                                                                $totalValue += $StyleMasterProcesses->value;
+                                                                $totalDuration += $StyleMasterProcesses->duration;
+                                                            @endphp
+                                                        @endforeach
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td>{{ $totalQty }}</td>
+                                                            <td>{{ $totalRate }}</td>
+                                                            <td>{{ $totalValue }}</td>
+                                                            <td>{{ $totalDuration }}</td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="card mt-2">
+                                            <div class="card-header">
+                                                <h4>Bom List</h4>
+                                            </div>
+                                            <div class="card-body table-responsive pt-0">
+                                                <table class="datatables-basic table" id="datatable-list-bom">
+                                                    <thead class="table-secondary">
+                                                        <tr>
+                                                            <th>Sr.No</th>
+                                                            <th>Category</th>
+                                                            <th>Sub Category</th>
+                                                            <th>Item</th>
+                                                            <th>Available Qty</th>
+                                                            <th>Rate</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="dataTableBody">
+                                                        @php
+                                                            $totalAvailableQty = 0;
+                                                            $totalRate = 0;
+                                                        @endphp
+                                                        @php $num =1; @endphp
+                                                        @foreach ($StyleMaster->StyleMasterMaterials as $StyleMasterMaterials)
+                                                            @if (!empty($StyleMasterMaterials->id))
+                                                                @php
+                                                                    $totalAvailableQty +=
+                                                                        $StyleMasterMaterials->available_qty;
+                                                                    $totalRate += $StyleMasterMaterials->rate;
+                                                                @endphp
+                                                                <tr>
+                                                                    <td>{{ $num }}</td>
+                                                                    <td>{{ $StyleMasterMaterials->Item->ItemCategory->name ?? '' }}
+                                                                    </td>
+                                                                    <td>{{ $StyleMasterMaterials->Item->ItemSubCategory->name ?? '' }}
+                                                                    </td>
+                                                                    <td>{{ $StyleMasterMaterials->Item->name ?? '' }}</td>
+                                                                    <td width="200">
+                                                                        {{ $StyleMasterMaterials->available_qty }}
+                                                                    </td>
+                                                                    <td>{{ $StyleMasterMaterials->rate }}</td>
+                                                                </tr>
+                                                            @endif
+                                                            @php $num ++; @endphp
+                                                        @endforeach
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td colspan="4">All Total</td>
+                                                            <td>{{ $totalAvailableQty }}</td>
+                                                            <td>{{ $totalRate }}</td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="card-body table-responsive pt-0">
-                                      <table class="datatables-basic  table" id="datatable-list-process">
-                                        <thead class="table-secondary">
-                                        <tr>
-                                          <th>Sr No</th>
-                                          <th>Process</th>
-                                          <th>Qty</th>
-                                          <th>Rate</th>
-                                          <th>Amount</th>
-                                          <th>Duration</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="dataTableBody">
-                                        @php
-                                          $totalQty = 0;
-                                          $totalRate = 0;
-                                          $totalValue = 0;
-                                          $totalDuration = 0;
-                                        @endphp
-                                          @foreach ($StyleMaster->StyleMasterProcesses as $StyleMasterProcesses)
-                                            <tr>
-                                              <td>{{ $StyleMasterProcesses->sr_no }}</td>
-                                              <td>{{ $StyleMasterProcesses->ProcessMaster->name ?? '' }}</td>
-                                              <td>{{ $StyleMasterProcesses->qty }}</td>
-                                              <td>{{ $StyleMasterProcesses->rate }}</td>
-                                              <td>{{ $StyleMasterProcesses->value }}</td>
-                                              <td>{{ $StyleMasterProcesses->duration }}</td>
-                                            </tr>
-                                            @php
-                                              $totalQty += $StyleMasterProcesses->qty;
-                                              $totalRate += $StyleMasterProcesses->rate;
-                                              $totalValue += $StyleMasterProcesses->value;
-                                              $totalDuration += $StyleMasterProcesses->duration;
-                                            @endphp
-                                          @endforeach
-                                        </tbody>
-                                        <tfoot>
-                                        <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td>{{ $totalQty }}</td>
-                                          <td>{{ $totalRate }}</td>
-                                          <td>{{ $totalValue }}</td>
-                                          <td>{{ $totalDuration }}</td>
-                                        </tr>
-                                        </tfoot>
-                                      </table>
-                                    </div>
-                                  </div>
-                                  <div class="card mt-2">
-                                    <div class="card-header">
-                                      <h4>Bom List</h4>
-                                    </div>
-                                    <div class="card-body table-responsive pt-0">
-                                      <table class="datatables-basic table" id="datatable-list-bom">
-                                        <thead class="table-secondary">
-                                        <tr>
-                                          <th>Sr.No</th>
-                                          <th>Category</th>
-                                          <th>Sub Category</th>
-                                          <th>Item</th>
-                                          <th>Available Qty</th>
-                                          <th>Rate</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="dataTableBody">
-                                        @php
-                                          $totalAvailableQty = 0;
-                                          $totalRate = 0;
-                                        @endphp
-                                          @php $num =1; @endphp
-                                          @foreach ($StyleMaster->StyleMasterMaterials as $StyleMasterMaterials)
-                                            @if (!empty($StyleMasterMaterials->id))
-                                              @php
-                                                $totalAvailableQty += $StyleMasterMaterials->available_qty;
-                                                $totalRate += $StyleMasterMaterials->rate;
-                                              @endphp
-                                              <tr>
-                                                <td>{{ $num }}</td>
-                                                <td>{{ $StyleMasterMaterials->Item->ItemCategory->name ?? '' }}</td>
-                                                <td>{{ $StyleMasterMaterials->Item->ItemSubCategory->name ?? '' }}
-                                                </td>
-                                                <td>{{ $StyleMasterMaterials->Item->name ?? '' }}</td>
-                                                <td width="200">{{ $StyleMasterMaterials->available_qty }}
-                                                </td>
-                                                <td>{{ $StyleMasterMaterials->rate }}</td>
-                                              </tr>
-                                            @endif
-                                            @php $num ++; @endphp
-                                          @endforeach
-                                        </tbody>
-                                        <tfoot>
-                                        <tr>
-                                          <td colspan="4">All Total</td>
-                                          <td>{{ $totalAvailableQty }}</td>
-                                          <td>{{ $totalRate }}</td>
-                                        </tr>
-                                        </tfoot>
-                                      </table>
-                                    </div>
-                                  </div>
                                 </div>
-                              </div>
 
 
                                 <div class="divider mt-5">
                                     <div class="divider-text">Other Information</div>
-                                </div>
-
-
-                              <div class="col-md-3">
-                                    <label class="form-label" for="sample_photo">Sample Photo</label>
-                                    @if (!empty($StyleMaster->sample_photo))
-                                        <p class="mt-2"><a target="_blank"
-                                                href="{{ Helper::getSamplePhoto($StyleMaster->id, $StyleMaster->sample_photo) }}"
-                                                download>
-                                                Sample Photo :-- Download</a></p>
-                                        <p class="mt-2">
-                                            <a href="{{ Helper::getSamplePhoto($StyleMaster->id, $StyleMaster->sample_photo) }}"
-                                                target="_blank">
-                                                <img width="100px" height="75px"
-                                                    src="{{ Helper::getSamplePhoto($StyleMaster->id, $StyleMaster->sample_photo) }}"
-                                                    alt="Sample Photo">
-                                            </a>
-                                        </p>
-                                    @endif
                                 </div>
 
                                 <div class="col-md-3">
@@ -375,6 +363,26 @@
             </div>
         </div>
     </div>
+
+    @if (!empty($SamplePhotos))
+        <div class="card mt-4">
+            <h5 class="card-header">Sample Photos</h5>
+            <div class="card-body">
+                <div class="content">
+                    <div class="row g-4">
+                        @foreach ($SamplePhotos as $name => $photos)
+                            <div class="col-md-2">
+                                <a href="{{ $photos }}" target="_blank">
+                                    <img width="100px" height="75px" src="{{ $photos }}" alt="Sample Photo">
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
 
 @endsection
 <script>

@@ -142,13 +142,13 @@ class InventoryController extends Controller
                       <i class="ti ti-User ti-sm"></i>
                   </div>
                   <div class="card-info">
-                      <h5 class="mb-0">' . $Inventory->User->person_name . '</h5>
-                      <small>' . $Inventory->User->company_name . '</small>
+                      <h5 class="mb-0">' . ($Inventory->User->person_name ?? '') . '</h5>
+                      <small>' . ($Inventory->User->company_name ?? '') . '</small>
                   </div>
               </div>';
 
 
-      array_push($result["data"], array($num, $Inventory->WareHouse->name, $Inventory->item->name, $Type, $Qty, $AvgRate, $GoodInventory, $AllotedInventory, $RequiredInventory, $UserDate));
+      array_push($result["data"], array($num, ($Inventory->WareHouse->name ?? ''), $Inventory->item->name, $Type, $Qty, $AvgRate, $GoodInventory, $AllotedInventory, $RequiredInventory, $UserDate));
       $num++;
     }
     echo json_encode($result);

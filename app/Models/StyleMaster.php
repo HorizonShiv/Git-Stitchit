@@ -23,7 +23,7 @@ class StyleMaster extends Model
     'fit_id',
     'season_id',
     'designer_id',
-	  'merchant_id',
+    'merchant_id',
     'designer_name',
     'rate',
     'color',
@@ -76,7 +76,7 @@ class StyleMaster extends Model
   {
     return $this->belongsTo(User::class, 'designer_id', 'id');
   }
-	
+
   public function SalesOrderStyleInfo()
   {
     return $this->hasMany(SalesOrderStyleInfo::class, 'style_master_id', 'id');

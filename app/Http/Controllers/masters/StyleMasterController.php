@@ -33,10 +33,30 @@ class StyleMasterController extends Controller
     return view('content.style-master.list', compact("StyleMaster"));
   }
 
+  public function styleImageDelete(Request $request)
+  {
+    $directory = public_path('/samplePhoto/' . $request->styleId . '/');
+
+    // Construct the full path to the image file
+    $filePath = $directory . '/' . $request->imageName;
+
+    // Check if the file exists
+    if (File::exists($filePath)) {
+      // Delete the file
+      File::delete($filePath);
+
+      // Return a success response
+      return redirect()->action([SeasonController::class, 'index'])->withSuccess('Successfully Done');
+    } else {
+      // Return an error response if the file doesn't exist
+      return redirect()->action([SeasonController::class, 'index'])->withErrors('Some thing is wrong');
+    }
+  }
+
   /**
    * Show the form for creating a new resource.
    */
-	public function styleMasterList(Request $request)
+  public function styleMasterList(Request $request)
   {
     $StyleMaster = StyleMaster::with('StyleCategory', 'StyleSubCategory', 'Customer', 'User', 'Demographic', 'Brand');
 
@@ -115,7 +135,7 @@ class StyleMasterController extends Controller
 
       $Brand = '<span class="badge rounded bg-label-dark">' . $brandName . '</span>';
 
-		
+
       if (!empty($styleMasterData->designer_id) && !empty($styleMasterData->User)) {
         $designerName = $styleMasterData->User->company_name;
         $designerAvatar = substr($styleMasterData->User->company_name, 0, 2);
@@ -224,7 +244,7 @@ class StyleMasterController extends Controller
       'fit_id' => $request->Fit,
       'season_id' => $request->Season,
       'designer_id' => $request->Designer,
-		'merchant_id' => $request->Merchant,
+      'merchant_id' => $request->Merchant,
       'color' => $request->Color,
       'designer_name' => $request->DesignerName,
       'rate' => $request->rate,
@@ -234,94 +254,95 @@ class StyleMasterController extends Controller
     $StyleMaster->save();
 
     $StyleId = $StyleMaster->id;
-      if (!empty($request->processData)) {
-          $totalProcessDataArray = count($request->processData);
-      } else {
-          $totalProcessDataArray = 0;
-      }
-      if ($totalProcessDataArray > 0) {
-          $processDatas = $request->processData;
+    if (!empty($request->processData)) {
+      $totalProcessDataArray = count($request->processData);
+    } else {
+      $totalProcessDataArray = 0;
+    }
+    if ($totalProcessDataArray > 0) {
+      $processDatas = $request->processData;
 
-          foreach ($processDatas as $processData) {
-              if (!empty($processData['processItem'])) {
+      foreach ($processDatas as $processData) {
+        if (!empty($processData['processItem'])) {
 
-                  $StyleMasterProcesses = new StyleMasterProcesses([
-                      'rate' => $processData['processRate'],
-                      'duration' => $processData['processDuration'],
-                      'sr_no' => $processData['srNo'],
-                      'qty' => $processData['processQty'],
-                      'value' => $processData['processValue'],
-                      'process_master_id' => $processData['processItem'],
-                      'style_master_id' => $StyleId
-                  ]);
-                  $StyleMasterProcesses->save();
-              }
-          }
-      }
-
-      if (!empty($request->bomListData)) {
-          $totalBomListDataArray = count($request->bomListData);
-      } else {
-          $totalBomListDataArray = 0;
-      }
-
-      if ($totalBomListDataArray > 0) {
-          $bomListDatas = $request->bomListData;
-
-          foreach ($bomListDatas as $bomListData) {
-              if (!empty($bomListData['rawItem'])) {
-                  $StyleMasterMaterials = new StyleMasterMaterials([
-                      'item_id' => $bomListData['rawItem'],
-                      'available_qty' => $bomListData['rawAvailableQty'],
-                      'rate' => $bomListData['rawRate'],
-                      'style_master_id' => $StyleId
-                  ]);
-                  $StyleMasterMaterials->save();
-              }
-          }
-      }
-
-      if ($request->spec_sheet) {
-        $this->validate(request(), [
-          'spec_sheet.*' => 'mimes:pdf,xlsx,xls,jpg,png,jpeg|max:2048',
-        ]);
-        $file = $request->spec_sheet;
-        $file_name = $file->getClientOriginalName();
-        $new_file_name = str_replace(' ', '-', $file_name);
-        $destination_path = public_path('/specsSheet/' . $StyleId . '/');
-        if (!is_dir(public_path('/specsSheet'))) {
-          mkdir(public_path('/specsSheet'), 0755, true);
+          $StyleMasterProcesses = new StyleMasterProcesses([
+            'rate' => $processData['processRate'],
+            'duration' => $processData['processDuration'],
+            'sr_no' => $processData['srNo'],
+            'qty' => $processData['processQty'],
+            'value' => $processData['processValue'],
+            'process_master_id' => $processData['processItem'],
+            'style_master_id' => $StyleId
+          ]);
+          $StyleMasterProcesses->save();
         }
-        $file->move($destination_path, $new_file_name);
-
-        StyleMaster::where('id', $StyleId)->update([
-          "specs_sheet" => $new_file_name,
-        ]);
       }
+    }
 
-      if ($request->bom_sheet) {
-        $this->validate(request(), [
-          'bom_sheet.*' => 'mimes:pdf,xlsx,xls,jpg,png,jpeg|max:2048',
-        ]);
-        $file = $request->bom_sheet;
-        $file_name = $file->getClientOriginalName();
-        $new_file_name = str_replace(' ', '-', $file_name);
-        $destination_path = public_path('/bomSheet/' . $StyleId . '/');
-        if (!is_dir(public_path('/bomSheet'))) {
-          mkdir(public_path('/bomSheet'), 0755, true);
+    if (!empty($request->bomListData)) {
+      $totalBomListDataArray = count($request->bomListData);
+    } else {
+      $totalBomListDataArray = 0;
+    }
+
+    if ($totalBomListDataArray > 0) {
+      $bomListDatas = $request->bomListData;
+
+      foreach ($bomListDatas as $bomListData) {
+        if (!empty($bomListData['rawItem'])) {
+          $StyleMasterMaterials = new StyleMasterMaterials([
+            'item_id' => $bomListData['rawItem'],
+            'available_qty' => $bomListData['rawAvailableQty'],
+            'rate' => $bomListData['rawRate'],
+            'style_master_id' => $StyleId
+          ]);
+          $StyleMasterMaterials->save();
         }
-        $file->move($destination_path, $new_file_name);
-
-        StyleMaster::where('id', $StyleId)->update([
-          "bom_sheet" => $new_file_name,
-        ]);
       }
+    }
 
-      if ($request->sample_photo) {
+    if ($request->spec_sheet) {
+      $this->validate(request(), [
+        'spec_sheet.*' => 'mimes:pdf,xlsx,xls,jpg,png,jpeg|max:2048',
+      ]);
+      $file = $request->spec_sheet;
+      $file_name = $file->getClientOriginalName();
+      $new_file_name = str_replace(' ', '-', $file_name);
+      $destination_path = public_path('/specsSheet/' . $StyleId . '/');
+      if (!is_dir(public_path('/specsSheet'))) {
+        mkdir(public_path('/specsSheet'), 0755, true);
+      }
+      $file->move($destination_path, $new_file_name);
+
+      StyleMaster::where('id', $StyleId)->update([
+        "specs_sheet" => $new_file_name,
+      ]);
+    }
+
+    if ($request->bom_sheet) {
+      $this->validate(request(), [
+        'bom_sheet.*' => 'mimes:pdf,xlsx,xls,jpg,png,jpeg|max:2048',
+      ]);
+      $file = $request->bom_sheet;
+      $file_name = $file->getClientOriginalName();
+      $new_file_name = str_replace(' ', '-', $file_name);
+      $destination_path = public_path('/bomSheet/' . $StyleId . '/');
+      if (!is_dir(public_path('/bomSheet'))) {
+        mkdir(public_path('/bomSheet'), 0755, true);
+      }
+      $file->move($destination_path, $new_file_name);
+
+      StyleMaster::where('id', $StyleId)->update([
+        "bom_sheet" => $new_file_name,
+      ]);
+    }
+
+    if (!empty($request->sample_photo)) {
+      foreach ($request->sample_photo as $SamplePhoto) {
         $this->validate(request(), [
-          'sample_photo.*' => 'mimes:pdf,xlsx,xls,jpg,png,jpeg|max:2048',
+          'sample_photo.*' => 'mimes:xlsx,xls,jpg,png,jpeg|max:2048',
         ]);
-        $file = $request->sample_photo;
+        $file = $SamplePhoto;
         $file_name = $file->getClientOriginalName();
         $new_file_name = str_replace(' ', '-', $file_name);
         $destination_path = public_path('/samplePhoto/' . $StyleId . '/');
@@ -334,59 +355,60 @@ class StyleMasterController extends Controller
           "sample_photo" => $new_file_name,
         ]);
       }
+    }
 
-      if ($request->tech_pack) {
-        $this->validate(request(), [
-          'tech_pack.*' => 'mimes:pdf,xlsx,xls,jpg,png,jpeg|max:2048',
-        ]);
-        $file = $request->tech_pack;
-        $file_name = $file->getClientOriginalName();
-        $new_file_name = str_replace(' ', '-', $file_name);
-        $destination_path = public_path('/techPack/' . $StyleId . '/');
-        if (!is_dir(public_path('/techPack'))) {
-          mkdir(public_path('/techPack'), 0755, true);
-        }
-        $file->move($destination_path, $new_file_name);
-
-        StyleMaster::where('id', $StyleId)->update([
-          "tech_pack" => $new_file_name,
-        ]);
+    if ($request->tech_pack) {
+      $this->validate(request(), [
+        'tech_pack.*' => 'mimes:pdf,xlsx,xls,jpg,png,jpeg|max:2048',
+      ]);
+      $file = $request->tech_pack;
+      $file_name = $file->getClientOriginalName();
+      $new_file_name = str_replace(' ', '-', $file_name);
+      $destination_path = public_path('/techPack/' . $StyleId . '/');
+      if (!is_dir(public_path('/techPack'))) {
+        mkdir(public_path('/techPack'), 0755, true);
       }
+      $file->move($destination_path, $new_file_name);
 
-      if ($request->trim_card) {
-        $this->validate(request(), [
-          'trim_card.*' => 'mimes:pdf,xlsx,xls,jpg,png,jpeg|max:2048',
-        ]);
-        $file = $request->trim_card;
-        $file_name = $file->getClientOriginalName();
-        $new_file_name = str_replace(' ', '-', $file_name);
-        $destination_path = public_path('/trimCard/' . $StyleId . '/');
-        if (!is_dir(public_path('/trimCard'))) {
-          mkdir(public_path('/trimCard'), 0755, true);
-        }
-        $file->move($destination_path, $new_file_name);
+      StyleMaster::where('id', $StyleId)->update([
+        "tech_pack" => $new_file_name,
+      ]);
+    }
 
-        StyleMaster::where('id', $StyleId)->update([
-          "trim_card" => $new_file_name,
-        ]);
+    if ($request->trim_card) {
+      $this->validate(request(), [
+        'trim_card.*' => 'mimes:pdf,xlsx,xls,jpg,png,jpeg|max:2048',
+      ]);
+      $file = $request->trim_card;
+      $file_name = $file->getClientOriginalName();
+      $new_file_name = str_replace(' ', '-', $file_name);
+      $destination_path = public_path('/trimCard/' . $StyleId . '/');
+      if (!is_dir(public_path('/trimCard'))) {
+        mkdir(public_path('/trimCard'), 0755, true);
       }
-		if ($request->final_image) {
-        $this->validate(request(), [
-          'final_image.*' => 'mimes:pdf,xlsx,xls,jpg,png,jpeg|max:2048',
-        ]);
-        $file = $request->final_image;
-        $file_name = $file->getClientOriginalName();
-        $new_file_name = str_replace(' ', '-', $file_name);
-        $destination_path = public_path('/finalImage/' . $StyleId . '/');
-        if (!is_dir(public_path('/finalImage'))) {
-          mkdir(public_path('/finalImage'), 0755, true);
-        }
-        $file->move($destination_path, $new_file_name);
+      $file->move($destination_path, $new_file_name);
 
-        StyleMaster::where('id', $StyleId)->update([
-          "final_image" => $new_file_name,
-        ]);
+      StyleMaster::where('id', $StyleId)->update([
+        "trim_card" => $new_file_name,
+      ]);
+    }
+    if ($request->final_image) {
+      $this->validate(request(), [
+        'final_image.*' => 'mimes:pdf,xlsx,xls,jpg,png,jpeg|max:2048',
+      ]);
+      $file = $request->final_image;
+      $file_name = $file->getClientOriginalName();
+      $new_file_name = str_replace(' ', '-', $file_name);
+      $destination_path = public_path('/finalImage/' . $StyleId . '/');
+      if (!is_dir(public_path('/finalImage'))) {
+        mkdir(public_path('/finalImage'), 0755, true);
       }
+      $file->move($destination_path, $new_file_name);
+
+      StyleMaster::where('id', $StyleId)->update([
+        "final_image" => $new_file_name,
+      ]);
+    }
 
     if ($StyleMaster) {
       if ($request->AddMore) {
@@ -433,8 +455,8 @@ class StyleMasterController extends Controller
     $Designer = User::where('role', '=', 'vendor')->get();
     $categoryData = StyleCategory::all();
     $SubCategoryData = StyleSubCategory::all();
-	  
-	  $processMasters = ProcessMaster::all();
+
+    $processMasters = ProcessMaster::all();
     $itemMasters = Item::all();
     $categoryMasters = ItemCategory::all();
     $subcategoryMasters = ItemSubCategory::all();
@@ -564,7 +586,20 @@ class StyleMasterController extends Controller
     $result['showHtmlRawMaterials'] = $htmlRawMaterial;
     $result['showHtmlProcess'] = $htmlProcess;
 
-    return view('content.style-master.edit', compact('Designer', 'categoryData', 'SubCategoryData', 'StyleMaster', 'result', 'processMasters', 'itemMasters', 'categoryMasters', 'subcategoryMasters'));
+    $directory = public_path('/samplePhoto/' . $StyleMaster->id . '/');
+    $SamplePhotos = [];
+    // if (is_dir(public_path($directory))) {
+
+    if (file_exists($directory)) {
+
+      $files = File::files($directory);
+      foreach ($files as $file) {
+        $SamplePhotos[$file->getFilename()] = asset('/samplePhoto/' . $StyleMaster->id . '/' . $file->getFilename());
+      }
+    }
+
+
+    return view('content.style-master.edit', compact('Designer', 'categoryData', 'SubCategoryData', 'StyleMaster', 'result', 'processMasters', 'itemMasters', 'categoryMasters', 'subcategoryMasters', 'SamplePhotos'));
   }
 
   /**
@@ -585,7 +620,7 @@ class StyleMasterController extends Controller
     ]);
 
     $StyleMaster = StyleMaster::where('id', $id)->update([
-       'style_no' => $request->Style_No,
+      'style_no' => $request->Style_No,
       'style_date' => $request->Style_date,
       'brand_id' => $request->Brand,
       'customer_id' => $request->Customer,
@@ -596,7 +631,7 @@ class StyleMasterController extends Controller
       'fit_id' => $request->Fit,
       'season_id' => $request->Season,
       'designer_id' => $request->Designer,
-		'merchant_id' => $request->Merchant,
+      'merchant_id' => $request->Merchant,
       'color' => $request->Color,
       'designer_name' => $request->DesignerName,
       'rate' => $request->rate,
@@ -606,74 +641,74 @@ class StyleMasterController extends Controller
     ]);
 
     if ($StyleMaster) {
-	
-	if (!empty($request->processData)) {
-      $totalProcessDataArray = count($request->processData);
-    } else {
-      $totalProcessDataArray = 0;
-    }
-    if ($totalProcessDataArray > 0) {
-      $processDatas = $request->processData;
 
-      foreach ($processDatas as $processData) {
-        if (!empty($processData['processItem'])) {
-          if (!empty($processData['planingOrderProcessesId'])) {
-            StyleMasterProcesses::where('id', $processData['planingOrderProcessesId'])->update([
-              'rate' => $processData['processRate'],
-              'duration' => $processData['processDuration'],
-              'sr_no' => $processData['srNo'],
-              'qty' => $processData['processQty'],
-              'value' => $processData['processValue'],
-              'process_master_id' => $processData['processItem'],
-            ]);
-          } else {
-            $StyleMasterProcesses = new StyleMasterProcesses([
-              'rate' => $processData['processRate'],
-              'duration' => $processData['processDuration'],
-              'sr_no' => $processData['srNo'],
-              'qty' => $processData['processQty'],
-              'value' => $processData['processValue'],
-              'process_master_id' => $processData['processItem'],
-              'style_master_id' => $id,
-            ]);
-            $StyleMasterProcesses->save();
+      if (!empty($request->processData)) {
+        $totalProcessDataArray = count($request->processData);
+      } else {
+        $totalProcessDataArray = 0;
+      }
+      if ($totalProcessDataArray > 0) {
+        $processDatas = $request->processData;
+
+        foreach ($processDatas as $processData) {
+          if (!empty($processData['processItem'])) {
+            if (!empty($processData['planingOrderProcessesId'])) {
+              StyleMasterProcesses::where('id', $processData['planingOrderProcessesId'])->update([
+                'rate' => $processData['processRate'],
+                'duration' => $processData['processDuration'],
+                'sr_no' => $processData['srNo'],
+                'qty' => $processData['processQty'],
+                'value' => $processData['processValue'],
+                'process_master_id' => $processData['processItem'],
+              ]);
+            } else {
+              $StyleMasterProcesses = new StyleMasterProcesses([
+                'rate' => $processData['processRate'],
+                'duration' => $processData['processDuration'],
+                'sr_no' => $processData['srNo'],
+                'qty' => $processData['processQty'],
+                'value' => $processData['processValue'],
+                'process_master_id' => $processData['processItem'],
+                'style_master_id' => $id,
+              ]);
+              $StyleMasterProcesses->save();
+            }
           }
         }
       }
-    }
 
-	 if (!empty($request->bomListData)) {
-      $totalBomListDataArray = count($request->bomListData);
-    } else {
-      $totalBomListDataArray = 0;
-    }
+      if (!empty($request->bomListData)) {
+        $totalBomListDataArray = count($request->bomListData);
+      } else {
+        $totalBomListDataArray = 0;
+      }
 
-    if ($totalBomListDataArray > 0) {
-      $bomListDatas = $request->bomListData;
+      if ($totalBomListDataArray > 0) {
+        $bomListDatas = $request->bomListData;
 
-      foreach ($bomListDatas as $bomListData) {
-        if (!empty($bomListData['rawItem'])) {
-          if (!empty($bomListData['planingOrderMaterialsId'])) {
-            StyleMasterMaterials::where('id', $bomListData['planingOrderMaterialsId'])->update([
-              'item_id' => $bomListData['rawItem'],
-              'available_qty' => $bomListData['rawAvailableQty'],
-              'rate' => $bomListData['rawRate'],
-            ]);
-          } else {
-            $StyleMasterMaterials = new StyleMasterMaterials([
-              'item_id' => $bomListData['rawItem'],
-              'available_qty' => $bomListData['rawAvailableQty'],
-              'rate' => $bomListData['rawRate'],
-              'style_master_id' => $id,
-            ]);
-            $StyleMasterMaterials->save();
+        foreach ($bomListDatas as $bomListData) {
+          if (!empty($bomListData['rawItem'])) {
+            if (!empty($bomListData['planingOrderMaterialsId'])) {
+              StyleMasterMaterials::where('id', $bomListData['planingOrderMaterialsId'])->update([
+                'item_id' => $bomListData['rawItem'],
+                'available_qty' => $bomListData['rawAvailableQty'],
+                'rate' => $bomListData['rawRate'],
+              ]);
+            } else {
+              $StyleMasterMaterials = new StyleMasterMaterials([
+                'item_id' => $bomListData['rawItem'],
+                'available_qty' => $bomListData['rawAvailableQty'],
+                'rate' => $bomListData['rawRate'],
+                'style_master_id' => $id,
+              ]);
+              $StyleMasterMaterials->save();
+            }
           }
         }
       }
-    }
-		
-		
-		
+
+
+
       if ($request->spec_sheet) {
         $this->validate(request(), [
           'spec_sheet.*' => 'mimes:pdf,xlsx,xls,jpg,png,jpeg|max:2048',
@@ -709,22 +744,24 @@ class StyleMasterController extends Controller
         ]);
       }
 
-      if ($request->sample_photo) {
-        $this->validate(request(), [
-          'sample_photo.*' => 'mimes:pdf,xlsx,xls,jpg,png,jpeg|max:2048',
-        ]);
-        $file = $request->sample_photo;
-        $file_name = $file->getClientOriginalName();
-        $new_file_name = str_replace(' ', '-', $file_name);
-        $destination_path = public_path('/samplePhoto/' . $id . '/');
-        if (!is_dir(public_path('/samplePhoto'))) {
-          mkdir(public_path('/samplePhoto'), 0755, true);
-        }
-        $file->move($destination_path, $new_file_name);
+      if (!empty($request->sample_photo)) {
+        foreach ($request->sample_photo as $SamplePhoto) {
+          $this->validate(request(), [
+            'sample_photo.*' => 'mimes:xlsx,xls,jpg,png,jpeg|max:2048',
+          ]);
+          $file = $SamplePhoto;
+          $file_name = $file->getClientOriginalName();
+          $new_file_name = str_replace(' ', '-', $file_name);
+          $destination_path = public_path('/samplePhoto/' . $id . '/');
+          if (!is_dir(public_path('/samplePhoto'))) {
+            mkdir(public_path('/samplePhoto'), 0755, true);
+          }
+          $file->move($destination_path, $new_file_name);
 
-        StyleMaster::where('id', $id)->update([
-          "sample_photo" => $new_file_name,
-        ]);
+          StyleMaster::where('id', $id)->update([
+            "sample_photo" => $new_file_name,
+          ]);
+        }
       }
 
       if ($request->tech_pack) {
@@ -762,8 +799,8 @@ class StyleMasterController extends Controller
           "trim_card" => $new_file_name,
         ]);
       }
-		
-		if ($request->final_image) {
+
+      if ($request->final_image) {
         $this->validate(request(), [
           'final_image.*' => 'mimes:pdf,xlsx,xls,jpg,png,jpeg|max:2048',
         ]);
@@ -811,8 +848,20 @@ class StyleMasterController extends Controller
 
   public function view($id)
   {
-     $StyleMaster = StyleMaster::with('StyleMasterMaterials.Item.ItemSubCategory', 'StyleMasterMaterials.Item.ItemCategory', 'StyleMasterProcesses.ProcessMaster', 'Fit', 'Customer', 'StyleCategory', 'StyleSubCategory', 'Season', 'User', 'Demographic','Brand')->where('id', $id)->first();
-    return view('content.style-master.view', compact('StyleMaster'));
+    $StyleMaster = StyleMaster::with('StyleMasterMaterials.Item.ItemSubCategory', 'StyleMasterMaterials.Item.ItemCategory', 'StyleMasterProcesses.ProcessMaster', 'Fit', 'Customer', 'StyleCategory', 'StyleSubCategory', 'Season', 'User', 'Demographic', 'Brand')->where('id', $id)->first();
+    $directory = public_path('/samplePhoto/' . $StyleMaster->id . '/');
+    $SamplePhotos = [];
+    // if (is_dir(public_path($directory))) {
+
+    if (file_exists($directory)) {
+
+      $files = File::files($directory);
+      foreach ($files as $file) {
+        $SamplePhotos[$file->getFilename()] = asset('/samplePhoto/' . $StyleMaster->id . '/' . $file->getFilename());
+      }
+    }
+
+    return view('content.style-master.view', compact('StyleMaster', 'SamplePhotos'));
   }
 
 

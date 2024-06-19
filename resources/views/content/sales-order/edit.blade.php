@@ -35,6 +35,9 @@
 
 
 @section('content')
+    @php
+        $requiredHtml = Helper::requiredHtml();
+    @endphp
 
     <h4 class="py-3 mb-4">
         <span class="text-muted fw-light float-left">Sales Order /</span> Add
@@ -57,12 +60,14 @@
 
                             <div class="col-md-3">
                                 <label class="form-label" for="SalesOrderDate">Date</label>
+                                {!! $requiredHtml !!}
                                 <input type="date" class="form-control date-picker" id="SalesOrderDate"
                                     name="SalesOrderDate" value="{{ date('Y-m-d') }}" placeholder="YYYY-MM-DD" />
                             </div>
 
                             <div class="col-md-3">
                                 <label class="form-label" for="CustomerName">Customer Name</label>
+                                {!! $requiredHtml !!}
                                 <select required id="CustomerName" name="CustomerName" class="select2 select21 form-select"
                                     data-allow-clear="true" data-placeholder="Select Customer Name">
                                     <option value="">Select</option>
@@ -77,6 +82,7 @@
 
                             <div class="col-md-3">
                                 <label class="form-label" for="Brand">Brand</label>
+                                {!! $requiredHtml !!}
                                 <select required id="Brand" name="Brand" class="select2 select21 form-select"
                                     data-allow-clear="true" data-placeholder="Select Brand">
                                     <option value="">Select</option>
@@ -89,6 +95,7 @@
 
                             <div class="col-md-3">
                                 <label class="form-label" for="Season">Season</label>
+                                {!! $requiredHtml !!}
                                 <select required id="Season" name="Season" class="select2 select21 form-select"
                                     data-allow-clear="true" data-placeholder="Select Season">
                                     <option value="">Select</option>
@@ -135,9 +142,11 @@
                                     <div class="col-12 col-md-6 col-lg-6">
                                         <label class="form-label" for="StyleNo">Style No &nbsp;
                                         </label>
+                                        {!! $requiredHtml !!}
                                         <div class="input-group">
-                                            <select class=" col-lg-3 form-select select2" style="min-width: 200px !important;"
-                                                name="StyleNo" onchange="getItemParameter();" id="StyleNo"
+                                            <select class=" col-lg-3 form-select select2"
+                                                style="min-width: 200px !important;" name="StyleNo"
+                                                onchange="getItemParameter();" id="StyleNo"
                                                 aria-label="Example select with button addon">
                                                 <option selected="">-- Choose your style --</option>
                                                 @foreach (\App\Models\StyleMaster::all() as $data)
@@ -152,18 +161,21 @@
 
                                     <div class="col-12 col-md-6">
                                         <label class="form-label" for="CustomerStyleNo">Customer Style No</label>
+                                        {!! $requiredHtml !!}
                                         <input required type="text" id="CustomerStyleNo" name="CustomerStyleNo"
                                             class="form-control" placeholder="Customer Style No" />
                                     </div>
 
                                     <div class="col-12 col-md-6">
                                         <label class="form-label" for="Price">Rate</label>
+                                        {!! $requiredHtml !!}
                                         <input required type="number" id="Price" name="Price"
                                             class="form-control" placeholder="Rate" />
                                     </div>
 
                                     <div class="col-12 col-md-6">
                                         <label class="form-label" for="TotalQty">Total Qty</label>
+                                        {!! $requiredHtml !!}
                                         <div class="input-group">
                                             <input required type="number" id="TotalQty" name="TotalQty"
                                                 class="form-control" placeholder="Total Qty" />
@@ -187,6 +199,7 @@
 
                                     <div class="col-12 col-md-6 col-lg-6">
                                         <label class="form-label" for="ShipDate">Ship Date</label>
+                                        {!! $requiredHtml !!}
                                         <input type="date" class="form-control date-picker" id="ShipDate"
                                             name="ShipDate" placeholder="YYYY-MM-DD" />
                                     </div>
@@ -280,9 +293,9 @@
     </div>
     <div class="row g-3">
         <!-- <div class="d-grid gap-2 col-lg-3 mx-auto mt-5">
-                                                            <button id="SaveAndClose" value="SaveAndClose" onclick="storeSelectedStyle(1);"
-                                                                class="btn btn-primary btn-md waves-effect waves-light" type="button">Save & Close</button>
-                                                        </div>-->
+                                                                    <button id="SaveAndClose" value="SaveAndClose" onclick="storeSelectedStyle(1);"
+                                                                        class="btn btn-primary btn-md waves-effect waves-light" type="button">Save & Close</button>
+                                                                </div>-->
     </div>
 
 
@@ -464,674 +477,674 @@
     </div>
 @endsection
 <script>
-  var rowCount = 0;
-
-  function updateTable(input) {
-      var rowCount = 1;
-      // Create a div to contain the table
-      const tableContainer = document.createElement('div');
-      const numbers = input.split(',');
-
-      // Create table
-      const table = document.createElement('table');
-      table.setAttribute('id', 'SizeRatios');
-
-      // Parse input string to extract numbers
-      const thead = document.createElement('thead');
-      table.appendChild(thead);
-
-      const inputHeader = document.createElement('input');
-      inputHeader.type = 'text';
-      inputHeader.value = `Color`;
-      inputHeader.readOnly = true;
-      inputHeader.className = 'form-control';
-      thead.appendChild(inputHeader);
-
-      numbers.forEach((number, index) => {
-          // Create input element
-          const headerCell = document.createElement('th');
-          const Headerinput = document.createElement('input');
-          Headerinput.type = 'text';
-          Headerinput.name = `Size[]`;
-          Headerinput.value = number;
-          Headerinput.readOnly = true;
-          Headerinput.className = 'form-control';
-          headerCell.appendChild(Headerinput);
-
-          headerCell.appendChild(Headerinput);
-
-          // Append header cell to thead
-          thead.appendChild(headerCell);
-      });
-
-      const headerRow = table.insertRow();
-      headerRow.className = 'odd';
-      const dataRow = table.insertRow(); // Add a new row for data
-      dataRow.className = 'odd';
-
-      const dataCell = dataRow.insertCell();
-      dataCell.rowSpan = 2; // Set the colspan attribute to 2
-      const inputFirst = document.createElement('input');
-      inputFirst.type = 'text';
-      inputFirst.name = `Color[${rowCount}]`;
-      inputFirst.placeholder = 'Color';
-      inputFirst.style.height = '78px'; // Fixing the height
-      inputFirst.className = 'form-control';
-      dataCell.appendChild(inputFirst);
-
-      const dataRowQty = table.insertRow();
-      dataRowQty.className = 'odd';
-      // Add columns with numbers as headings and input fields in data row
-      numbers.forEach((number, index) => {
-          const dataCellRatio = dataRow.insertCell();
-          const inputRatio = document.createElement('input');
-          inputRatio.type = 'text';
-          inputRatio.placeholder = 'Ratio';
-          inputRatio.name = `Ratio[${rowCount}][${index}]`;
-          inputRatio.className = 'form-control';
-          dataCellRatio.appendChild(inputRatio);
-          dataCellRatio.rowSpan = 1; // Default rowspan value
-
-          // Create a new row
-          const dataCellQty = dataRowQty.insertCell(); // Insert a cell into the new row
-          const inputQty = document.createElement('input');
-          inputQty.type = 'text';
-          inputQty.placeholder = 'Qty';
-          inputQty.name = `Qty[${rowCount}][${index}]`;
-          inputQty.className = 'form-control';
-          dataCellQty.appendChild(inputQty);
-      });
-
-      // Add empty cell in the header row
-      const inputHeaderLast = document.createElement('input');
-      inputHeaderLast.type = 'text';
-      inputHeaderLast.value = `total`;
-      inputHeaderLast.readOnly = true;
-      inputHeaderLast.className = 'form-control';
-      thead.appendChild(inputHeaderLast);
-
-      // Add empty cell in the data row
-      const dataCellLast = dataRow.insertCell();
-      const inputLast = document.createElement('input');
-      inputLast.type = 'text';
-      inputLast.name = `Total[${rowCount}]`;
-      inputLast.placeholder = 'Total';
-      inputLast.style.height = '78px'; // Fixing the height
-      inputLast.className = 'form-control';
-      dataCellLast.rowSpan = 2;
-      dataCellLast.appendChild(inputLast);
-
-      // Increment row count for the next row
-      rowCount++;
-
-      // Append the table to the container div
-      tableContainer.appendChild(table);
-
-      // Clear previous table content
-      document.getElementById('table-container').innerHTML = '';
-
-      // Add the table container to the table-container div
-      document.getElementById('table-container').appendChild(tableContainer);
-  }
-
-  function addRow() {
-      const table = document.querySelector('#table-container table');
-      const tbody = table.querySelector('tbody');
-      const newTbody = tbody.cloneNode(true);
-      const rows = newTbody.querySelectorAll('tr');
-
-      const tbodyElements = table.querySelectorAll('tbody');
-      const tbodyCount = tbodyElements.length;
-      console.log("Number of tbody elements:", tbodyCount);
-
-
-      rows.forEach((row, rowIndex) => {
-          var newparameterIndex = 0;
-          var newqtyIndex = 0;
-          var newratioIndex = 0;
-          const inputs = row.querySelectorAll('input');
-
-          inputs.forEach((input, inputIndex) => {
-              if (input.name.includes('Color')) {
-                  input.name = `Color[${tbodyCount+1}]`; // Use color count for index
-              } else if (input.name.includes('Size')) {
-                  input.name = `Size[${tbodyCount+1}][${inputIndex}]`;
-              } else if (input.name.includes('Ratio')) {
-                  input.name = `Ratio[${tbodyCount+1}][${newratioIndex}]`;
-                  newratioIndex++;
-              } else if (input.name.includes('Qty')) {
-                  input.name = `Qty[${tbodyCount+1}][${newqtyIndex}]`;
-                  newqtyIndex++;
-              } else if (input.name.includes('parameterIds')) {
-                  input.name = `parameterIds[${tbodyCount+1}][${newparameterIndex}]`;
-                  input.value = '';
-                  newparameterIndex++;
-              } else if (input.name.includes('Total')) {
-                  input.name = `Total[${tbodyCount+1}]`;
-              }
-          });
-      });
-
-      table.appendChild(newTbody);
-  }
-
-  function checkTotalQty() {
-      var totalQty = $('#TotalQty').val();
-
-      if (totalQty == '') {
-          toastr.error("Please Enter Total Qty");
-      } else {
-          $('.ValidateModelForTotalQty').attr('id', 'addSize');
-          $('#addSize').modal('show');
-          $('.ValidateModelForTotalQty').removeAttr('id');
-      }
-  }
-
-  function AddNewStyleData() {
-      // Retrieving values from input fields
-      var modelDate = $('#ModelDate').val();
-      var modelStyleNo = $('#ModelStyleNo').val();
-      var modelFebric = $('#ModelFebric').val();
-      var modelCustomer = $('#ModelCustomer').val();
-      var modelStyleCategory = $('#ModelStyleCategory').val();
-      var modelStyleSubCategory = $('#ModelStyleSubCategory').val();
-      var modelFit = $('#ModelFit').val();
-      var modelSeason = $('#ModelSeason').val();
-      var modelDesigner = $('#ModelDesigner').val();
-      var modelRate = $('#ModelRate').val();
-
-      // Sending AJAX request
-      if (modelDate === '' || modelStyleNo === '' || modelFebric === '' || modelCustomer === '' ||
-          modelStyleCategory === '' || modelStyleSubCategory === '' || modelFit === '' || modelSeason === '' ||
-          modelDesigner === '' ||
-          modelRate === '') {
-
-          if (modelDate === '') {
-              var errorMessage = 'Date should be filled out';
-              toastr.error(errorMessage);
-          }
-          if (modelStyleNo === '') {
-              var errorMessage = 'Style No should be filled out';
-              toastr.error(errorMessage);
-          }
-          if (modelFebric === '') {
-              var errorMessage = 'Febric should be filled out';
-              toastr.error(errorMessage);
-          }
-          if (modelCustomer === '') {
-              var errorMessage = 'Customer should be filled out';
-              toastr.error(errorMessage);
-          }
-          if (modelStyleCategory === '') {
-              var errorMessage = 'Style Category should be filled out';
-              toastr.error(errorMessage);
-          }
-          if (modelStyleSubCategory === '') {
-              var errorMessage = 'Style Sub-Category should be filled out';
-              toastr.error(errorMessage);
-          }
-          if (modelFit === '') {
-              var errorMessage = 'Fit should be filled out';
-              toastr.error(errorMessage);
-          }
-          if (modelSeason === '') {
-              var errorMessage = 'Season should be filled out';
-              toastr.error(errorMessage);
-          }
-          if (modelDesigner === '') {
-              var errorMessage = 'Designer should be filled out';
-              toastr.error(errorMessage);
-          }
-          if (modelRate === '') {
-              var errorMessage = 'Rate should be filled out';
-              toastr.error(errorMessage);
-          }
-      } else {
-          $.ajax({
-              url: "{{ route('addNewStyleSalesOrder') }}", // Route for adding new style sales order
-              method: "POST",
-              data: {
-                  modelDate: modelDate,
-                  modelStyleNo: modelStyleNo,
-                  modelFebric: modelFebric,
-                  modelCustomer: modelCustomer,
-                  modelStyleCategory: modelStyleCategory,
-                  modelStyleSubCategory: modelStyleSubCategory,
-                  modelFit: modelFit,
-                  modelSeason: modelSeason,
-                  modelDesigner: modelDesigner,
-                  modelRate: modelRate,
-                  _token: '{{ csrf_token() }}' // CSRF token for security
-              },
-              success: function(response) {
-                  // If the request is successful
-                  if (response.success) {
-                      toastr.success('Style has been added'); // Logging the response style data
-                      // $('#StyleNo').empty(); // Clearing previous options in #StyleNo select element
-                      // Appending new options based on the response style data
-                      $('#StyleNo').empty();
-                      $.each(response.StyleData, function(index, style) {
-                          $('#StyleNo').append('<option value="' + style.id + '">' +
-                              '' + style.style_no + '</option>');
-                      });
-
-                      // $('#editUserForm').trigger('reset');
-                      $('#ModelDate').val('');
-                      $('#ModelStyleNo').val('');
-                      $('#ModelFebric').val('');
-                      $('#ModelCustomer').val('');
-                      $('#ModelStyleCategory').val('');
-                      $('#ModelStyleSubCategory').val('');
-                      $('#ModelFit').val('');
-                      $('#ModelSeason').val('');
-                      $('#ModelDesigner').val('');
-                      $('#ModelRate').val('');
-                  }
-              }
-          });
-      }
-  }
-
-  document.addEventListener('keydown', function(event) {
-      if ((event.ctrlKey || event.metaKey) && event.key === 'r') {
-          event.preventDefault(); // Prevent the default behavior (refreshing the page)
-
-          Swal.fire({
-              title: 'Are you sure?',
-              text: "You won't be able to revert this!",
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonText: 'Yes, Close it!',
-              customClass: {
-                  confirmButton: 'btn btn-primary me-3',
-                  cancelButton: 'btn btn-label-secondary'
-              }
-          }).then((result) => {
-              if (result.isConfirmed) {
-                  Swal.fire('Done', 'Successfully! Done', 'success').then(() => {
-                      location.reload();
-                  });
-              }
-          });
-      }
-  });
-
-
-  function calculateDate() {
-      var totalQty = parseFloat($('#TotalQty').val()); // Get the total quantity as a number
-      var totalRatio = 0;
-      var totalModelQty = 0;
-
-      $('tr').each(function() {
-          var ratio = parseFloat($(this).find('input[name="Ratio[]"]')
-              .val()); // Get the ratio value for this row
-
-          if (!isNaN(ratio)) { // Check if ratio is a valid number
-              totalRatio += ratio; // Add ratio to totalRatio
-          }
-
-          var ModelQty = parseFloat($(this).find('input[name="Qty[]"]')
-              .val()); // Get the ratio value for this row
-
-          if (!isNaN(ModelQty)) { // Check if ratio is a valid number
-              totalModelQty += ModelQty; // Add ratio to totalRatio
-          }
-      });
-
-      var calculatedQty = totalQty / totalRatio; // Calculate the quantity
-
-      // Iterate over each row
-      $('tr').each(function() {
-          var ratioModel = parseFloat($(this).find('input[name="Ratio[]"]')
-              .val()); // Get the ratio value for this row
-          var quantityInput = $(this).find(
-              'input[name="Qty[]"]'); // Get the quantity input field for this row
-          var totalModelQty = calculatedQty * ratioModel;
-          if (ratioModel !== 0) {
-              quantityInput.val(totalModelQty.toFixed(2)); // Set the calculated quantity in the input field
-
-          } else {
-              quantityInput.val(''); // If ratio is 0, clear the input field
-          }
-      });
-
-      $('#totalRatioModel').val(totalRatio);
-      $('#totalQtyModel').val(totalQty);
-  }
-
-  var counter = 1;
-
-  function addRowInModel() {
-      var htmlSnippet =
-          '<tr class="odd" id="ModelRow_' + counter +
-          '"><td><input type="text" class="form-control 2" name="Color[]" value=""></td><td><input type="number" class="form-control 2" name="Size[]" value=""></td><td><input type="number" class="form-control 2" onkeyup="calculateDate();" name="Ratio[]" value=""></td><td><input type="number" class="form-control 2"  name="Qty[]" value="" readonly></td><td><button type="button" class="btn rounded-pill btn-icon btn-label-danger waves-effect" onclick="removeRowInModel(' +
-          counter + '); calculateDate();"><span class="ti ti-trash"></span></button></td></tr>';
-
-      $('#SizeRatios tbody').append('<tr>' + htmlSnippet + '</tr>');
-      counter++;
-
-  }
-
-  function removeRowInModel(rowId) {
-      // Remove the row with the given rowId
-      $('#ModelRow_' + rowId).remove();
-  }
-
-  function closeTheSetup() {
-      Swal.fire({
-          title: 'Are you sure?',
-          text: "You won't be able to revert this!",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Yes, Close it!',
-          customClass: {
-              confirmButton: 'btn btn-primary me-3',
-              cancelButton: 'btn btn-label-secondary'
-          }
-      }).then((result) => {
-          if (result.isConfirmed) {
-              Swal.fire('Done', 'Successfully! Done', 'success').then(() => {
-                  location.reload();
-              });
-          }
-      });
-  }
-
-  function storeSelectedStyle(redirection) {
-
-      // Initialize an empty array to store the data from input fields
-      var dataArray = [];
-
-      var tableData = {};
-      var colorData = {};
-      var ratioData = [];
-      var qtyData = [];
-      var parameterData = [];
-
-      // Extract color data
-      $('input[name^="Color"]').each(function() {
-          var name = $(this).attr('name');
-          var value = $(this).val();
-          var index = parseInt(name.match(/\[(\d+)\]/)[1]); // Extract index from name
-
-          colorData[index] = value;
-      });
-
-      // Extract ratio data
-      $('input[name^="Ratio"]').each(function() {
-          var name = $(this).attr('name');
-          var value = $(this).val();
-          var index = parseInt(name.match(/\[(\d+)\]/)[1]); // Extract index from name
-
-          ratioData[index] = ratioData[index] || []; // Initialize array if not exists
-          ratioData[index].push(value);
-      });
-
-      // Extract quantity data
-      $('input[name^="Qty"]').each(function() {
-          var name = $(this).attr('name');
-          var value = $(this).val();
-          var index = parseInt(name.match(/\[(\d+)\]/)[1]); // Extract index from name
-
-          qtyData[index] = qtyData[index] || []; // Initialize array if not exists
-          qtyData[index].push(value);
-      });
-
-      $('input[name^="parameterIds"]').each(function() {
-          var name = $(this).attr('name');
-          var value = $(this).val();
-          var index = parseInt(name.match(/\[(\d+)\]/)[1]); // Extract index from name
-
-          parameterData[index] = parameterData[index] || []; // Initialize array if not exists
-          parameterData[index].push(value);
-      });
-
-      tableData['color'] = colorData;
-      tableData['ratio'] = ratioData;
-      tableData['qty'] = qtyData;
-      tableData['parameterIds'] = parameterData;
-
-      var requestData = {
-          tableData: tableData
-      };
-
-      // Now you can pass the requestData through AJAX
-      console.log(JSON.stringify(tableData));
-
-
-      // This is the style data that going to be reset
-      var styleNo = $('#StyleNo').val();
-      var customerStyleNo = $('#CustomerStyleNo').val();
-      var price = $('#Price').val();
-      var totalQty = $('#TotalQty').val();
-
-      var styleImage = $('#StyleImageAttachment').prop('files')[0];
-
-      var shipDate = $('#ShipDate').val();
-      var details = $('#Details').val();
-
-      //Main Sale Order Data that should not get reset
-      var saleOrderDate = $('#SalesOrderDate').val();
-      var customerName = $('#CustomerName').val();
-      var brand = $('#Brand').val();
-      var season = $('#Season').val();
-
-      var salesOrderId = $('#SalesOrderId').val();
-
-      var value = 0;
-
-      value = price * totalQty;
-
-      //Just to print this into the table
-      var styleText = $('#StyleNo option:selected').text();
-
-      //For update data
-      var salesStyleId = $('#SalesStyleId').val();
-      var parameterDataSaperation = $('#parameterDataSaperation').val();
-
-      var htmlData = '';
-
-      var errorCounter = 0;
-
-      $('input[name^="Color"]').each(function() {
-          var name = $(this).attr('name');
-          var value = $(this).val();
-          var index = parseInt(name.match(/\[(\d+)\]/)[1]); // Extract index from name
-
-          colorData[index] = value;
-
-          // Simple validation: Check if the value is non-empty
-          if (!value) {
-              errorCounter++;
-          }
-
-          // Add more validation logic as needed, e.g., check if value is a valid color
-      });
-
-      if (customerName === '' || brand === '' || season === '' || saleOrderDate === '' || styleNo === '' ||
-          customerStyleNo === '' || price === '' || totalQty === '' || shipDate === '' || errorCounter != 0) {
-          $('#validationErrorMessage').remove();
-          if (customerName === '' || brand === '' || season === '' || saleOrderDate === '') {
-              var errorMessage = 'Primary Information should be filled Out : ';
-              if (customerName === '') errorMessage += 'Customer Name, ';
-              if (brand === '') errorMessage += 'Brand, ';
-              if (season === '') errorMessage += 'Season, ';
-              if (saleOrderDate === '') errorMessage += 'Date, ';
-              errorMessage = errorMessage.slice(0, -2);
-
-              toastr.error(errorMessage);
-          }
-          if (errorCounter != 0) {
-              toastr.error('Color Should be fill out!!');
-          }
-          if (styleNo === '') {
-              var errorMessage = 'Style No should be filled out';
-              toastr.error(errorMessage);
-          }
-          if (customerStyleNo === '') {
-              var errorMessage = 'Customer No should be filled out';
-              toastr.error(errorMessage);
-          }
-          if (price === '') {
-              var errorMessage = 'Rate should be filled out';
-              toastr.error(errorMessage);
-          }
-          if (totalQty === '') {
-              var errorMessage = 'Qty should be filled out';
-              toastr.error(errorMessage);
-          }
-          if (shipDate === '') {
-              var errorMessage = 'Ship Date should be filled out';
-              toastr.error(errorMessage);
-          }
-          // if (colorInput.length === 0) {
-          //     var errorMessage = 'Parameter should be filled out';
-          //     toastr.error(errorMessage);
-          // }
-
-      } else {
-          $('#validationErrorMessage').remove();
-          var formData = new FormData();
-          formData.append('styleNo', styleNo);
-          formData.append('salesStyleId', salesStyleId);
-          formData.append('customerStyleNo', customerStyleNo);
-          formData.append('price', price);
-          formData.append('totalQty', totalQty);
-          if (typeof styleImage !== 'undefined') {
-              formData.append('styleImage', styleImage);
-          }
-          formData.append('shipDate', shipDate);
-          formData.append('details', details);
-          formData.append('saleOrderDate', saleOrderDate);
-          formData.append('customerName', customerName);
-          formData.append('dataArray', JSON.stringify(requestData));
-          formData.append('brand', brand);
-          formData.append('season', season);
-          formData.append('parameterSizeData', parameterDataSaperation);
-          formData.append('salesOrderId', salesOrderId);
-          formData.append('redirection', redirection);
-          formData.append('_token', '{{ csrf_token() }}');
-          rowCount = 1;
-          $.ajax({
-              url: "{{ route('StoreSalesStyleData') }}",
-              method: 'POST',
-              data: formData,
-              processData: false, // Prevent jQuery from automatically processing the data
-              contentType: false, // Prevent jQuery from setting the content type
-
-              success: function(response) {
-                  console.log(response);
-                  if (response.success) {
-
-                      if (response.redirect == 1) {
-                          Swal.fire('Done', 'Successfully! Done', 'success').then(() => {
-                              location.reload();
-                          });
-                      } else {
-                          $('#SalesStyleBtn')
-                              .removeClass('btn-success')
-                              .addClass('btn-primary')
-                              .text('Save')
-
-                          toastr.success('Successfully done');
-
-                          console.log(response);
-                          $('#styleInformation').append('<tr id="saleRow_' + response.id + '">' +
-                              '<td>' + styleText + '</td>' +
-                              '<td>' + totalQty + '</td>' +
-                              '<td>' + price + '</td>' +
-                              '<td>' + value + '</td>' +
-                              '<td>' + response.StyleData.style_category.name + ' - ' + response
-                              .StyleData
-                              .fit
-                              .name + '</td>' +
-                              '<td>' +
-                              '<a type="button" href="#" class="btn rounded-pill btn-icon btn-label-primary waves-effect" onclick="getSalesData(' +
-                              response.id +
-                              ');" style="margin-left: 10%"><span class="ti ti-arrow-back-up"></span></a>' +
-                              '</td>' +
-                              '</tr>');
-
-                          $('#ModelParameter').trigger('reset');
-
-                          $('#StyleInformation').trigger('reset');
-
-                          $('#SalesOrderId').val(response.SalesOrderId);
-                          $('#SizeRatios tbody').empty();
-
-                          counter++;
-                          $("#StyleNo").val();
-                          $("#StyleNo").trigger('change');
-                          $("#StyleNo").select2('refresh');
-                      }
-                  } else {
-                      console.error('Error storing user:', response.error);
-                  }
-              }
-          });
-      }
-
-  }
-
-  function getSalesData(id) {
-      // Use the id parameter as needed
-      // console.log("ID received:", id);
-      if ($('#SalesStyleBtn').hasClass('btn-primary')) {
-          $('#saleRow_' + id).remove();
-          $.ajax({
-              url: "{{ route('getSalesDataEdit') }}", // Replace with your actual backend endpoint
-              method: 'POST',
-              data: {
-                  id: id,
-                  _token: '{{ csrf_token() }}',
-              }, // Send the id of the removed row to identify the data to fetch
-              success: function(response) {
-                  toastr.success('Successfully fetched');
-                  $('#SalesStyleBtn')
-                      .removeClass('btn-primary')
-                      .addClass('btn-success')
-                      .text('Update')
-                  // Populate the input fields with the fetched data
-                  $('#SalesStyleId').val(response.id);
-                  $('#CustomerStyleNo').val(response.StyleData.customer_style_no);
-                  $('#Price').val(response.StyleData.price);
-                  $('#TotalQty').val(response.StyleData.total_qty);
-
-                  $('#ShipDate').val(response.StyleData.ship_date);
-                  $('#Details').val(response.StyleData.details);
-                  // console.log(response);
-
-
-                  // var selectedStyleText = $('#StyleNo option:selected').text();
-                  // $('#StyleNo').val(null).trigger('change');
-                  $('#SizeRatios tbody').empty();
-
-                  getItemParameter();
-                  $('#table-container').html(response.htmlTable);
-                  $('#parameterDataSaperation').val(response.sizesString);
-                  rowCount = response.rowcount;
-
-                  $('#StyleNo').val(response.StyleData.style_master_id);
-                  $("#StyleNo").trigger('change');
-                  $("#StyleNo").select2('refresh');
-
-              },
-              error: function(xhr, status, error) {
-                  console.error('Error fetching data:', error);
-                  // Handle error case, if needed
-              }
-          });
-          // Add your AJAX request or other logic here
-      } else {
-          toastr.error("Please Update the last data");
-      }
-  }
+    var rowCount = 0;
+
+    function updateTable(input) {
+        var rowCount = 1;
+        // Create a div to contain the table
+        const tableContainer = document.createElement('div');
+        const numbers = input.split(',');
+
+        // Create table
+        const table = document.createElement('table');
+        table.setAttribute('id', 'SizeRatios');
+
+        // Parse input string to extract numbers
+        const thead = document.createElement('thead');
+        table.appendChild(thead);
+
+        const inputHeader = document.createElement('input');
+        inputHeader.type = 'text';
+        inputHeader.value = `Color`;
+        inputHeader.readOnly = true;
+        inputHeader.className = 'form-control';
+        thead.appendChild(inputHeader);
+
+        numbers.forEach((number, index) => {
+            // Create input element
+            const headerCell = document.createElement('th');
+            const Headerinput = document.createElement('input');
+            Headerinput.type = 'text';
+            Headerinput.name = `Size[]`;
+            Headerinput.value = number;
+            Headerinput.readOnly = true;
+            Headerinput.className = 'form-control';
+            headerCell.appendChild(Headerinput);
+
+            headerCell.appendChild(Headerinput);
+
+            // Append header cell to thead
+            thead.appendChild(headerCell);
+        });
+
+        const headerRow = table.insertRow();
+        headerRow.className = 'odd';
+        const dataRow = table.insertRow(); // Add a new row for data
+        dataRow.className = 'odd';
+
+        const dataCell = dataRow.insertCell();
+        dataCell.rowSpan = 2; // Set the colspan attribute to 2
+        const inputFirst = document.createElement('input');
+        inputFirst.type = 'text';
+        inputFirst.name = `Color[${rowCount}]`;
+        inputFirst.placeholder = 'Color';
+        inputFirst.style.height = '78px'; // Fixing the height
+        inputFirst.className = 'form-control';
+        dataCell.appendChild(inputFirst);
+
+        const dataRowQty = table.insertRow();
+        dataRowQty.className = 'odd';
+        // Add columns with numbers as headings and input fields in data row
+        numbers.forEach((number, index) => {
+            const dataCellRatio = dataRow.insertCell();
+            const inputRatio = document.createElement('input');
+            inputRatio.type = 'text';
+            inputRatio.placeholder = 'Ratio';
+            inputRatio.name = `Ratio[${rowCount}][${index}]`;
+            inputRatio.className = 'form-control';
+            dataCellRatio.appendChild(inputRatio);
+            dataCellRatio.rowSpan = 1; // Default rowspan value
+
+            // Create a new row
+            const dataCellQty = dataRowQty.insertCell(); // Insert a cell into the new row
+            const inputQty = document.createElement('input');
+            inputQty.type = 'text';
+            inputQty.placeholder = 'Qty';
+            inputQty.name = `Qty[${rowCount}][${index}]`;
+            inputQty.className = 'form-control';
+            dataCellQty.appendChild(inputQty);
+        });
+
+        // Add empty cell in the header row
+        const inputHeaderLast = document.createElement('input');
+        inputHeaderLast.type = 'text';
+        inputHeaderLast.value = `total`;
+        inputHeaderLast.readOnly = true;
+        inputHeaderLast.className = 'form-control';
+        thead.appendChild(inputHeaderLast);
+
+        // Add empty cell in the data row
+        const dataCellLast = dataRow.insertCell();
+        const inputLast = document.createElement('input');
+        inputLast.type = 'text';
+        inputLast.name = `Total[${rowCount}]`;
+        inputLast.placeholder = 'Total';
+        inputLast.style.height = '78px'; // Fixing the height
+        inputLast.className = 'form-control';
+        dataCellLast.rowSpan = 2;
+        dataCellLast.appendChild(inputLast);
+
+        // Increment row count for the next row
+        rowCount++;
+
+        // Append the table to the container div
+        tableContainer.appendChild(table);
+
+        // Clear previous table content
+        document.getElementById('table-container').innerHTML = '';
+
+        // Add the table container to the table-container div
+        document.getElementById('table-container').appendChild(tableContainer);
+    }
+
+    function addRow() {
+        const table = document.querySelector('#table-container table');
+        const tbody = table.querySelector('tbody');
+        const newTbody = tbody.cloneNode(true);
+        const rows = newTbody.querySelectorAll('tr');
+
+        const tbodyElements = table.querySelectorAll('tbody');
+        const tbodyCount = tbodyElements.length;
+        console.log("Number of tbody elements:", tbodyCount);
+
+
+        rows.forEach((row, rowIndex) => {
+            var newparameterIndex = 0;
+            var newqtyIndex = 0;
+            var newratioIndex = 0;
+            const inputs = row.querySelectorAll('input');
+
+            inputs.forEach((input, inputIndex) => {
+                if (input.name.includes('Color')) {
+                    input.name = `Color[${tbodyCount+1}]`; // Use color count for index
+                } else if (input.name.includes('Size')) {
+                    input.name = `Size[${tbodyCount+1}][${inputIndex}]`;
+                } else if (input.name.includes('Ratio')) {
+                    input.name = `Ratio[${tbodyCount+1}][${newratioIndex}]`;
+                    newratioIndex++;
+                } else if (input.name.includes('Qty')) {
+                    input.name = `Qty[${tbodyCount+1}][${newqtyIndex}]`;
+                    newqtyIndex++;
+                } else if (input.name.includes('parameterIds')) {
+                    input.name = `parameterIds[${tbodyCount+1}][${newparameterIndex}]`;
+                    input.value = '';
+                    newparameterIndex++;
+                } else if (input.name.includes('Total')) {
+                    input.name = `Total[${tbodyCount+1}]`;
+                }
+            });
+        });
+
+        table.appendChild(newTbody);
+    }
+
+    function checkTotalQty() {
+        var totalQty = $('#TotalQty').val();
+
+        if (totalQty == '') {
+            toastr.error("Please Enter Total Qty");
+        } else {
+            $('.ValidateModelForTotalQty').attr('id', 'addSize');
+            $('#addSize').modal('show');
+            $('.ValidateModelForTotalQty').removeAttr('id');
+        }
+    }
+
+    function AddNewStyleData() {
+        // Retrieving values from input fields
+        var modelDate = $('#ModelDate').val();
+        var modelStyleNo = $('#ModelStyleNo').val();
+        var modelFebric = $('#ModelFebric').val();
+        var modelCustomer = $('#ModelCustomer').val();
+        var modelStyleCategory = $('#ModelStyleCategory').val();
+        var modelStyleSubCategory = $('#ModelStyleSubCategory').val();
+        var modelFit = $('#ModelFit').val();
+        var modelSeason = $('#ModelSeason').val();
+        var modelDesigner = $('#ModelDesigner').val();
+        var modelRate = $('#ModelRate').val();
+
+        // Sending AJAX request
+        if (modelDate === '' || modelStyleNo === '' || modelFebric === '' || modelCustomer === '' ||
+            modelStyleCategory === '' || modelStyleSubCategory === '' || modelFit === '' || modelSeason === '' ||
+            modelDesigner === '' ||
+            modelRate === '') {
+
+            if (modelDate === '') {
+                var errorMessage = 'Date should be filled out';
+                toastr.error(errorMessage);
+            }
+            if (modelStyleNo === '') {
+                var errorMessage = 'Style No should be filled out';
+                toastr.error(errorMessage);
+            }
+            if (modelFebric === '') {
+                var errorMessage = 'Febric should be filled out';
+                toastr.error(errorMessage);
+            }
+            if (modelCustomer === '') {
+                var errorMessage = 'Customer should be filled out';
+                toastr.error(errorMessage);
+            }
+            if (modelStyleCategory === '') {
+                var errorMessage = 'Style Category should be filled out';
+                toastr.error(errorMessage);
+            }
+            if (modelStyleSubCategory === '') {
+                var errorMessage = 'Style Sub-Category should be filled out';
+                toastr.error(errorMessage);
+            }
+            if (modelFit === '') {
+                var errorMessage = 'Fit should be filled out';
+                toastr.error(errorMessage);
+            }
+            if (modelSeason === '') {
+                var errorMessage = 'Season should be filled out';
+                toastr.error(errorMessage);
+            }
+            if (modelDesigner === '') {
+                var errorMessage = 'Designer should be filled out';
+                toastr.error(errorMessage);
+            }
+            if (modelRate === '') {
+                var errorMessage = 'Rate should be filled out';
+                toastr.error(errorMessage);
+            }
+        } else {
+            $.ajax({
+                url: "{{ route('addNewStyleSalesOrder') }}", // Route for adding new style sales order
+                method: "POST",
+                data: {
+                    modelDate: modelDate,
+                    modelStyleNo: modelStyleNo,
+                    modelFebric: modelFebric,
+                    modelCustomer: modelCustomer,
+                    modelStyleCategory: modelStyleCategory,
+                    modelStyleSubCategory: modelStyleSubCategory,
+                    modelFit: modelFit,
+                    modelSeason: modelSeason,
+                    modelDesigner: modelDesigner,
+                    modelRate: modelRate,
+                    _token: '{{ csrf_token() }}' // CSRF token for security
+                },
+                success: function(response) {
+                    // If the request is successful
+                    if (response.success) {
+                        toastr.success('Style has been added'); // Logging the response style data
+                        // $('#StyleNo').empty(); // Clearing previous options in #StyleNo select element
+                        // Appending new options based on the response style data
+                        $('#StyleNo').empty();
+                        $.each(response.StyleData, function(index, style) {
+                            $('#StyleNo').append('<option value="' + style.id + '">' +
+                                '' + style.style_no + '</option>');
+                        });
+
+                        // $('#editUserForm').trigger('reset');
+                        $('#ModelDate').val('');
+                        $('#ModelStyleNo').val('');
+                        $('#ModelFebric').val('');
+                        $('#ModelCustomer').val('');
+                        $('#ModelStyleCategory').val('');
+                        $('#ModelStyleSubCategory').val('');
+                        $('#ModelFit').val('');
+                        $('#ModelSeason').val('');
+                        $('#ModelDesigner').val('');
+                        $('#ModelRate').val('');
+                    }
+                }
+            });
+        }
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if ((event.ctrlKey || event.metaKey) && event.key === 'r') {
+            event.preventDefault(); // Prevent the default behavior (refreshing the page)
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Close it!',
+                customClass: {
+                    confirmButton: 'btn btn-primary me-3',
+                    cancelButton: 'btn btn-label-secondary'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('Done', 'Successfully! Done', 'success').then(() => {
+                        location.reload();
+                    });
+                }
+            });
+        }
+    });
+
+
+    function calculateDate() {
+        var totalQty = parseFloat($('#TotalQty').val()); // Get the total quantity as a number
+        var totalRatio = 0;
+        var totalModelQty = 0;
+
+        $('tr').each(function() {
+            var ratio = parseFloat($(this).find('input[name="Ratio[]"]')
+                .val()); // Get the ratio value for this row
+
+            if (!isNaN(ratio)) { // Check if ratio is a valid number
+                totalRatio += ratio; // Add ratio to totalRatio
+            }
+
+            var ModelQty = parseFloat($(this).find('input[name="Qty[]"]')
+                .val()); // Get the ratio value for this row
+
+            if (!isNaN(ModelQty)) { // Check if ratio is a valid number
+                totalModelQty += ModelQty; // Add ratio to totalRatio
+            }
+        });
+
+        var calculatedQty = totalQty / totalRatio; // Calculate the quantity
+
+        // Iterate over each row
+        $('tr').each(function() {
+            var ratioModel = parseFloat($(this).find('input[name="Ratio[]"]')
+                .val()); // Get the ratio value for this row
+            var quantityInput = $(this).find(
+                'input[name="Qty[]"]'); // Get the quantity input field for this row
+            var totalModelQty = calculatedQty * ratioModel;
+            if (ratioModel !== 0) {
+                quantityInput.val(totalModelQty.toFixed(2)); // Set the calculated quantity in the input field
+
+            } else {
+                quantityInput.val(''); // If ratio is 0, clear the input field
+            }
+        });
+
+        $('#totalRatioModel').val(totalRatio);
+        $('#totalQtyModel').val(totalQty);
+    }
+
+    var counter = 1;
+
+    function addRowInModel() {
+        var htmlSnippet =
+            '<tr class="odd" id="ModelRow_' + counter +
+            '"><td><input type="text" class="form-control 2" name="Color[]" value=""></td><td><input type="number" class="form-control 2" name="Size[]" value=""></td><td><input type="number" class="form-control 2" onkeyup="calculateDate();" name="Ratio[]" value=""></td><td><input type="number" class="form-control 2"  name="Qty[]" value="" readonly></td><td><button type="button" class="btn rounded-pill btn-icon btn-label-danger waves-effect" onclick="removeRowInModel(' +
+            counter + '); calculateDate();"><span class="ti ti-trash"></span></button></td></tr>';
+
+        $('#SizeRatios tbody').append('<tr>' + htmlSnippet + '</tr>');
+        counter++;
+
+    }
+
+    function removeRowInModel(rowId) {
+        // Remove the row with the given rowId
+        $('#ModelRow_' + rowId).remove();
+    }
+
+    function closeTheSetup() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Close it!',
+            customClass: {
+                confirmButton: 'btn btn-primary me-3',
+                cancelButton: 'btn btn-label-secondary'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire('Done', 'Successfully! Done', 'success').then(() => {
+                    location.reload();
+                });
+            }
+        });
+    }
+
+    function storeSelectedStyle(redirection) {
+
+        // Initialize an empty array to store the data from input fields
+        var dataArray = [];
+
+        var tableData = {};
+        var colorData = {};
+        var ratioData = [];
+        var qtyData = [];
+        var parameterData = [];
+
+        // Extract color data
+        $('input[name^="Color"]').each(function() {
+            var name = $(this).attr('name');
+            var value = $(this).val();
+            var index = parseInt(name.match(/\[(\d+)\]/)[1]); // Extract index from name
+
+            colorData[index] = value;
+        });
+
+        // Extract ratio data
+        $('input[name^="Ratio"]').each(function() {
+            var name = $(this).attr('name');
+            var value = $(this).val();
+            var index = parseInt(name.match(/\[(\d+)\]/)[1]); // Extract index from name
+
+            ratioData[index] = ratioData[index] || []; // Initialize array if not exists
+            ratioData[index].push(value);
+        });
+
+        // Extract quantity data
+        $('input[name^="Qty"]').each(function() {
+            var name = $(this).attr('name');
+            var value = $(this).val();
+            var index = parseInt(name.match(/\[(\d+)\]/)[1]); // Extract index from name
+
+            qtyData[index] = qtyData[index] || []; // Initialize array if not exists
+            qtyData[index].push(value);
+        });
+
+        $('input[name^="parameterIds"]').each(function() {
+            var name = $(this).attr('name');
+            var value = $(this).val();
+            var index = parseInt(name.match(/\[(\d+)\]/)[1]); // Extract index from name
+
+            parameterData[index] = parameterData[index] || []; // Initialize array if not exists
+            parameterData[index].push(value);
+        });
+
+        tableData['color'] = colorData;
+        tableData['ratio'] = ratioData;
+        tableData['qty'] = qtyData;
+        tableData['parameterIds'] = parameterData;
+
+        var requestData = {
+            tableData: tableData
+        };
+
+        // Now you can pass the requestData through AJAX
+        console.log(JSON.stringify(tableData));
+
+
+        // This is the style data that going to be reset
+        var styleNo = $('#StyleNo').val();
+        var customerStyleNo = $('#CustomerStyleNo').val();
+        var price = $('#Price').val();
+        var totalQty = $('#TotalQty').val();
+
+        var styleImage = $('#StyleImageAttachment').prop('files')[0];
+
+        var shipDate = $('#ShipDate').val();
+        var details = $('#Details').val();
+
+        //Main Sale Order Data that should not get reset
+        var saleOrderDate = $('#SalesOrderDate').val();
+        var customerName = $('#CustomerName').val();
+        var brand = $('#Brand').val();
+        var season = $('#Season').val();
+
+        var salesOrderId = $('#SalesOrderId').val();
+
+        var value = 0;
+
+        value = price * totalQty;
+
+        //Just to print this into the table
+        var styleText = $('#StyleNo option:selected').text();
+
+        //For update data
+        var salesStyleId = $('#SalesStyleId').val();
+        var parameterDataSaperation = $('#parameterDataSaperation').val();
+
+        var htmlData = '';
+
+        var errorCounter = 0;
+
+        $('input[name^="Color"]').each(function() {
+            var name = $(this).attr('name');
+            var value = $(this).val();
+            var index = parseInt(name.match(/\[(\d+)\]/)[1]); // Extract index from name
+
+            colorData[index] = value;
+
+            // Simple validation: Check if the value is non-empty
+            if (!value) {
+                errorCounter++;
+            }
+
+            // Add more validation logic as needed, e.g., check if value is a valid color
+        });
+
+        if (customerName === '' || brand === '' || season === '' || saleOrderDate === '' || styleNo === '' ||
+            customerStyleNo === '' || price === '' || totalQty === '' || shipDate === '' || errorCounter != 0) {
+            $('#validationErrorMessage').remove();
+            if (customerName === '' || brand === '' || season === '' || saleOrderDate === '') {
+                var errorMessage = 'Primary Information should be filled Out : ';
+                if (customerName === '') errorMessage += 'Customer Name, ';
+                if (brand === '') errorMessage += 'Brand, ';
+                if (season === '') errorMessage += 'Season, ';
+                if (saleOrderDate === '') errorMessage += 'Date, ';
+                errorMessage = errorMessage.slice(0, -2);
+
+                toastr.error(errorMessage);
+            }
+            if (errorCounter != 0) {
+                toastr.error('Color Should be fill out!!');
+            }
+            if (styleNo === '') {
+                var errorMessage = 'Style No should be filled out';
+                toastr.error(errorMessage);
+            }
+            if (customerStyleNo === '') {
+                var errorMessage = 'Customer No should be filled out';
+                toastr.error(errorMessage);
+            }
+            if (price === '') {
+                var errorMessage = 'Rate should be filled out';
+                toastr.error(errorMessage);
+            }
+            if (totalQty === '') {
+                var errorMessage = 'Qty should be filled out';
+                toastr.error(errorMessage);
+            }
+            if (shipDate === '') {
+                var errorMessage = 'Ship Date should be filled out';
+                toastr.error(errorMessage);
+            }
+            // if (colorInput.length === 0) {
+            //     var errorMessage = 'Parameter should be filled out';
+            //     toastr.error(errorMessage);
+            // }
+
+        } else {
+            $('#validationErrorMessage').remove();
+            var formData = new FormData();
+            formData.append('styleNo', styleNo);
+            formData.append('salesStyleId', salesStyleId);
+            formData.append('customerStyleNo', customerStyleNo);
+            formData.append('price', price);
+            formData.append('totalQty', totalQty);
+            if (typeof styleImage !== 'undefined') {
+                formData.append('styleImage', styleImage);
+            }
+            formData.append('shipDate', shipDate);
+            formData.append('details', details);
+            formData.append('saleOrderDate', saleOrderDate);
+            formData.append('customerName', customerName);
+            formData.append('dataArray', JSON.stringify(requestData));
+            formData.append('brand', brand);
+            formData.append('season', season);
+            formData.append('parameterSizeData', parameterDataSaperation);
+            formData.append('salesOrderId', salesOrderId);
+            formData.append('redirection', redirection);
+            formData.append('_token', '{{ csrf_token() }}');
+            rowCount = 1;
+            $.ajax({
+                url: "{{ route('StoreSalesStyleData') }}",
+                method: 'POST',
+                data: formData,
+                processData: false, // Prevent jQuery from automatically processing the data
+                contentType: false, // Prevent jQuery from setting the content type
+
+                success: function(response) {
+                    console.log(response);
+                    if (response.success) {
+
+                        if (response.redirect == 1) {
+                            Swal.fire('Done', 'Successfully! Done', 'success').then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            $('#SalesStyleBtn')
+                                .removeClass('btn-success')
+                                .addClass('btn-primary')
+                                .text('Save')
+
+                            toastr.success('Successfully done');
+
+                            console.log(response);
+                            $('#styleInformation').append('<tr id="saleRow_' + response.id + '">' +
+                                '<td>' + styleText + '</td>' +
+                                '<td>' + totalQty + '</td>' +
+                                '<td>' + price + '</td>' +
+                                '<td>' + value + '</td>' +
+                                '<td>' + response.StyleData.style_category.name + ' - ' + response
+                                .StyleData
+                                .fit
+                                .name + '</td>' +
+                                '<td>' +
+                                '<a type="button" href="#" class="btn rounded-pill btn-icon btn-label-primary waves-effect" onclick="getSalesData(' +
+                                response.id +
+                                ');" style="margin-left: 10%"><span class="ti ti-arrow-back-up"></span></a>' +
+                                '</td>' +
+                                '</tr>');
+
+                            $('#ModelParameter').trigger('reset');
+
+                            $('#StyleInformation').trigger('reset');
+
+                            $('#SalesOrderId').val(response.SalesOrderId);
+                            $('#SizeRatios tbody').empty();
+
+                            counter++;
+                            $("#StyleNo").val();
+                            $("#StyleNo").trigger('change');
+                            $("#StyleNo").select2('refresh');
+                        }
+                    } else {
+                        console.error('Error storing user:', response.error);
+                    }
+                }
+            });
+        }
+
+    }
+
+    function getSalesData(id) {
+        // Use the id parameter as needed
+        // console.log("ID received:", id);
+        if ($('#SalesStyleBtn').hasClass('btn-primary')) {
+            $('#saleRow_' + id).remove();
+            $.ajax({
+                url: "{{ route('getSalesDataEdit') }}", // Replace with your actual backend endpoint
+                method: 'POST',
+                data: {
+                    id: id,
+                    _token: '{{ csrf_token() }}',
+                }, // Send the id of the removed row to identify the data to fetch
+                success: function(response) {
+                    toastr.success('Successfully fetched');
+                    $('#SalesStyleBtn')
+                        .removeClass('btn-primary')
+                        .addClass('btn-success')
+                        .text('Update')
+                    // Populate the input fields with the fetched data
+                    $('#SalesStyleId').val(response.id);
+                    $('#CustomerStyleNo').val(response.StyleData.customer_style_no);
+                    $('#Price').val(response.StyleData.price);
+                    $('#TotalQty').val(response.StyleData.total_qty);
+
+                    $('#ShipDate').val(response.StyleData.ship_date);
+                    $('#Details').val(response.StyleData.details);
+                    // console.log(response);
+
+
+                    // var selectedStyleText = $('#StyleNo option:selected').text();
+                    // $('#StyleNo').val(null).trigger('change');
+                    $('#SizeRatios tbody').empty();
+
+                    getItemParameter();
+                    $('#table-container').html(response.htmlTable);
+                    $('#parameterDataSaperation').val(response.sizesString);
+                    rowCount = response.rowcount;
+
+                    $('#StyleNo').val(response.StyleData.style_master_id);
+                    $("#StyleNo").trigger('change');
+                    $("#StyleNo").select2('refresh');
+
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching data:', error);
+                    // Handle error case, if needed
+                }
+            });
+            // Add your AJAX request or other logic here
+        } else {
+            toastr.error("Please Update the last data");
+        }
+    }
 </script>
 
 
 <script>
     function getItemParameter() {
-		$("#StyleDetails").html('');
+        $("#StyleDetails").html('');
         $("#Price").val(0);
         var StyleNo = document.getElementById('StyleNo').value;
         $.ajax({

@@ -232,7 +232,7 @@ class GRNManage extends Controller
 
 
     if ($request->WithOutPO != 1) { //Check With Out PO or Not
-		 $request->validate([
+      $request->validate([
         'poNo' => 'required',
       ]);
       $option_values = $_REQUEST['option_value'];
@@ -336,93 +336,92 @@ class GRNManage extends Controller
         return redirect()->action([GRNManage::class, 'index'])->withErrors('Error Occurred!');
       }
     } else {
-		$request->validate([
+      $request->validate([
         'Supplier' => 'required',
       ]);
-		if (!empty($request['item'])) {
-		  if (count($request['item']) > 0) {
-			foreach ($request['item'] as $Key => $Item) {
-			  $GrnItem = new GrnItem([
-				'warehouse_master_id' => $request->SelectWarehouse,
-				'date' => $date,
-				'item_master_id' => $Item,
-				'supplier_id' => $request->Supplier,
-				'qty' => $request['qty'][$Key],
-				'rate' => $request['rate'][$Key],
-				'grn_no' => $grnNo,
-				'challanNumber' => $_REQUEST['challanNumber'],
-				'invoiceNumber' => $_REQUEST['invoiceNumber'],
-				'remark' => $remark,
-			  ]);
-			  $GrnItem->save();
-			  $grnItemId = $GrnItem->id;
+      if (!empty($request['item'])) {
+        if (count($request['item']) > 0) {
+          foreach ($request['item'] as $Key => $Item) {
+            $GrnItem = new GrnItem([
+              'warehouse_master_id' => $request->SelectWarehouse,
+              'date' => $date,
+              'item_master_id' => $Item,
+              'supplier_id' => $request->Supplier,
+              'qty' => $request['qty'][$Key],
+              'rate' => $request['rate'][$Key],
+              'grn_no' => $grnNo,
+              'challanNumber' => $_REQUEST['challanNumber'],
+              'invoiceNumber' => $_REQUEST['invoiceNumber'],
+              'remark' => $remark,
+            ]);
+            $GrnItem->save();
+            $grnItemId = $GrnItem->id;
 
-			  $existingRates = Inventory::where('item_id', $Item)->first();
+            $existingRates = Inventory::where('item_id', $Item)->first();
 
-			  if ($existingRates !== null) {
+            if ($existingRates !== null) {
 
-				$OldTotalWithRate = $existingRates->total * $existingRates->avg_rate;
-				$NewTotalWithRate = $request['qty'][$Key] * $request['rate'][$Key];
+              $OldTotalWithRate = $existingRates->total * $existingRates->avg_rate;
+              $NewTotalWithRate = $request['qty'][$Key] * $request['rate'][$Key];
 
-				$Total = $existingRates->total + $request['qty'][$Key];
-				$GoodInventory = $existingRates->good_inventory + $request['qty'][$Key];
+              $Total = $existingRates->total + $request['qty'][$Key];
+              $GoodInventory = $existingRates->good_inventory + $request['qty'][$Key];
 
-				$AvgRate = ($OldTotalWithRate + $NewTotalWithRate) / $Total;
+              $AvgRate = ($OldTotalWithRate + $NewTotalWithRate) / $Total;
 
-				$Inventory = Inventory::where('id', $existingRates->id)->update([
-				  'total' => $Total,
-				  'good_inventory' => $GoodInventory,
-				  'avg_rate' => $AvgRate,
-				  'updated_date' => date('Y-m-d'),
-				]);
+              $Inventory = Inventory::where('id', $existingRates->id)->update([
+                'total' => $Total,
+                'good_inventory' => $GoodInventory,
+                'avg_rate' => $AvgRate,
+                'updated_date' => date('Y-m-d'),
+              ]);
 
-				$InventoryHistory = new InventoryHistory([
-				  'grnitem_id' => $grnItemId,
-				  'inventory_id' => $existingRates->id,
-				  'warehouse_master_id' => $request->SelectWarehouse,
-				  'user_id' => $userID,
-				  'item_id' => $Item,
-				  'type' => 'Change',
-				  'qty' => $request['qty'][$Key],
-				  'rate' => $request['rate'][$Key],
-				  'inventoryGood' => $request['qty'][$Key],
-				  'inventoryAllotted' => $existingRates->allotted_inventory,
-				  'inventoryRequired' => $existingRates->required_inventory,
-				  'created_date' => date('Y-m-d'),
-				]);
-				$InventoryHistory->save();
-			  } else {
+              $InventoryHistory = new InventoryHistory([
+                'grnitem_id' => $grnItemId,
+                'inventory_id' => $existingRates->id,
+                'warehouse_master_id' => $request->SelectWarehouse,
+                'user_id' => $userID,
+                'item_id' => $Item,
+                'type' => 'Change',
+                'qty' => $request['qty'][$Key],
+                'rate' => $request['rate'][$Key],
+                'inventoryGood' => $request['qty'][$Key],
+                'inventoryAllotted' => $existingRates->allotted_inventory,
+                'inventoryRequired' => $existingRates->required_inventory,
+                'created_date' => date('Y-m-d'),
+              ]);
+              $InventoryHistory->save();
+            } else {
 
-				$Inventory = new Inventory([
-				  'warehouse_master_id' => $request->SelectWarehouse,
-				  'item_id' => $Item,
-				  'total' => $request['qty'][$Key],
-				  'good_inventory' => $request['qty'][$Key],
-				  'avg_rate' => $request['rate'][$Key],
-				  'created_date' => date('Y-m-d'),
+              $Inventory = new Inventory([
+                'warehouse_master_id' => $request->SelectWarehouse,
+                'item_id' => $Item,
+                'total' => $request['qty'][$Key],
+                'good_inventory' => $request['qty'][$Key],
+                'avg_rate' => $request['rate'][$Key],
+                'created_date' => date('Y-m-d'),
 
-				]);
-				$Inventory->save();
-				$InventoryId = $Inventory->id;
+              ]);
+              $Inventory->save();
+              $InventoryId = $Inventory->id;
 
-				$InventoryHistory = new InventoryHistory([
-				  'grnitem_id' => $grnItemId,
-				  'inventory_id' => $InventoryId,
-				  'warehouse_master_id' => $request->SelectWarehouse,
-				  'user_id' => $userID,
-				  'item_id' => $Item,
-				  'type' => 'Add',
-				  'qty' => $request['qty'][$Key],
-				  'rate' => $request['rate'][$Key],
-				  'inventoryGood' => $request['qty'][$Key],
-				  'created_date' => date('Y-m-d'),
-				]);
-				$InventoryHistory->save();
-			  }
-			}
-		  }
-		}
-		else {
+              $InventoryHistory = new InventoryHistory([
+                'grnitem_id' => $grnItemId,
+                'inventory_id' => $InventoryId,
+                'warehouse_master_id' => $request->SelectWarehouse,
+                'user_id' => $userID,
+                'item_id' => $Item,
+                'type' => 'Add',
+                'qty' => $request['qty'][$Key],
+                'rate' => $request['rate'][$Key],
+                'inventoryGood' => $request['qty'][$Key],
+                'created_date' => date('Y-m-d'),
+              ]);
+              $InventoryHistory->save();
+            }
+          }
+        }
+      } else {
         return redirect()->action([GRNManage::class, 'grnAddView'])->withErrors('Item was not selected');
       }
     }
@@ -472,17 +471,7 @@ class GRNManage extends Controller
                 ->leftJoin('purchase_orders', 'purchase_orders.id', '=', 'purchase_order_items.po_id')
                 ->first();
 
-              //              if ($responseData->orderId == '33795') {
-              //              dd($poItem);
-              //                echo $poItem->Po->po_no;
-              //                exit();
-              //              }
               if ($poItem && ($poItem->po_no == $responseData->orderId)) {
-
-                //                if ($responseData->orderId == '33795') {
-                //                  echo $responseData->orderId;
-                //                  exit();
-                //                }
                 $po_item_id = $poItem->id;
                 $g_date = date('Y-m-d', strtotime($responseData->sortDate));
                 $g_qty = $responseData->quantity;

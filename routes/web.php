@@ -225,12 +225,11 @@ Route::middleware([CheckStatus::class])->group(function () {
   Route::post('/inventory/delete', [InventoryController::class, 'delete'])->name('inventory-delete');
   Route::post('/inventory/filter', [InventoryController::class, 'inventoryList'])->name('inventoryFilter');
   Route::post('/inventory/history', [InventoryController::class, 'inventoryHistory'])->name('inventoryHistory');
-
   // Sales order Routes
   Route::resource('/sales-order', SalesOrder::class);
   Route::post('/Sales-Style-update', [SalesOrder::class, 'update'])->name('getSalesDataUpdate');
   Route::post('/Sales-Style-Edit', [SalesOrder::class, 'getSalesDataEdit'])->name('getSalesDataEdit');
-	Route::post('/Sales-Style-Data-View', [SalesOrder::class, 'getSalesParameterDataView'])->name('getSalesParameterDataView');
+  Route::post('/Sales-Style-Data-View', [SalesOrder::class, 'getSalesParameterDataView'])->name('getSalesParameterDataView');
   Route::post('/Sales-Style-View', [SalesOrder::class, 'getSalesDataView'])->name('getSalesDataView');
   Route::post('/Sales-Style-Data', [SalesOrder::class, 'salesStyleData'])->name('StoreSalesStyleData');
   Route::post('/sales-order/item-parameter', [SalesOrder::class, 'getItemParameter'])->name('getItemParameter');
@@ -244,7 +243,7 @@ Route::middleware([CheckStatus::class])->group(function () {
   Route::get('/planning/create/{sale_id}', [OrderPlanning::class, 'create'])->name('order-planning-create');
   Route::get('/planning/create/{sale_id}/{planing_order_id}/{type}', [OrderPlanning::class, 'create'])->name('order-planning-create-with-planing-order');
   Route::post('/planning/getStyleDetails', [OrderPlanning::class, 'getStyleDetails'])->name('getPlanningStyleDetails');
-	Route::post('/planning/getStyleDetailsForSample', [OrderPlanning::class, 'getStyleDetailsForSample'])->name('getSampleStyleDetails');
+  Route::post('/planning/getStyleDetailsForSample', [OrderPlanning::class, 'getStyleDetailsForSample'])->name('getSampleStyleDetails');
   Route::post('/planning/getItemDetails', [OrderPlanning::class, 'getItemDetails'])->name('getItemDetails');
   Route::post('/planning/getCategoryDetails', [OrderPlanning::class, 'getCategoryDetails'])->name('getCategoryDetails');
   Route::post('/planning/getSubCategoryDetails', [OrderPlanning::class, 'getSubCategoryDetails'])->name('getSubCategoryDetails');
@@ -280,7 +279,7 @@ Route::middleware([CheckStatus::class])->group(function () {
   Route::put('/parameter-master/update/{id}', [ParameterMasterController::class, 'update'])->name('parameter-master-update');
   Route::post('/parameter-master/delete', [ParameterMasterController::class, 'delete'])->name('parameter-master-delete');
 
-	 // Demographic Routes
+  // Demographic Routes
   Route::resource('demographic', DemographicController::class);
   Route::get('/demographic/edit/{id}', [DemographicController::class, 'edit'])->name('demographic-edit');
   Route::put('/demographic/update/{id}', [DemographicController::class, 'update'])->name('demographic-update');
@@ -335,14 +334,22 @@ Route::middleware([CheckStatus::class])->group(function () {
   Route::get('/app/outward/list', [WareHouseController::class, 'warehouseOutwardList'])->name('warehouse-outward-list');
   Route::get('/app/gr-supplier', [WareHouseController::class, 'grSupplier'])->name('warehouse-gr-supplier');
   Route::get('/app/warehouse/view', [WareHouseController::class, 'warehouseView'])->name('warehouse-view');
-  Route::get('/app/app-warehouse-transfer', [WareHouseController::class, 'warehouseTransfer'])->name('warehouse-transfer');
+  Route::get('/app/app-warehouse-transfer/outward', [WareHouseController::class, 'warehouseTransfer'])->name('out-warehouse-transfer');
+
   Route::post('/getGrnItemForWarehouse', [WareHouseController::class, 'getGrnItemForWarehouse'])->name('getGrnItemForWarehouse');
   Route::post('/gr-supplier/add', [WareHouseController::class, 'addGrToSupplier'])->name('addGrToSupplier');
   Route::post('/getGrnItemQty', [WareHouseController::class, 'getGrnItemQty'])->name('getGrnItemQty');
   Route::post('/fetchQtyInventory', [WareHouseController::class, 'fetchQtyInventory'])->name('fetchQtyInventory');
   Route::post('/addwarehouseTransfer', [WareHouseController::class, 'addwarehouseTransfer'])->name('addwarehouseTransfer');
   Route::get('/app/gr-supplier/list', [WareHouseController::class, 'grSupplierList'])->name('gr-supplier-list');
-  Route::get('/app/transfer/list', [WareHouseController::class, 'warehouseTransferList'])->name('warehouse-transfer-list');
+  Route::get('/app/warehouse/outward/list', [WareHouseController::class, 'warehouseTransferList'])->name('warehouse-transfer-list');
+
+  Route::get('/app/app-warehouse-transfer/inward', [WareHouseController::class, 'warehouseInward'])->name('in-warehouse-transfer');
+  Route::get('/app/warehouse/inward/list', [WareHouseController::class, 'warehouseInwardList'])->name('warehouse-inward-list');
+  Route::post('/getOutwardData', [WareHouseController::class, 'getOutwardData'])->name('getOutwardData');
+  Route::post('/addWareHouseInward', [WareHouseController::class, 'addWareHouseInward'])->name('addWareHouseInward');
+
+
   // Production Routes
   Route::get('/production/process', [ProductionController::class, 'process'])->name('production-process');
   Route::get('/production/pendingList', [ProductionController::class, 'pendingList'])->name('production-pendingList');
@@ -367,7 +374,8 @@ Route::middleware([CheckStatus::class])->group(function () {
   Route::get('/style-master/view/{id}', [StyleMasterController::class, 'view'])->name('style-master-view');
   Route::post('/style/details', [StyleMasterController::class, 'getStyleDetails'])->name('getStyleDetails');
   Route::post('/sales-new-style', [StyleMasterController::class, 'addNewStyleSalesOrder'])->name('addNewStyleSalesOrder');
-	Route::post('/style-master/filter', [StyleMasterController::class, 'styleMasterList'])->name('style-master-filter');
+  Route::post('/style-master/filter', [StyleMasterController::class, 'styleMasterList'])->name('style-master-filter');
+  Route::post('/style-master/image/delete', [StyleMasterController::class, 'styleImageDelete'])->name('style-image-delete');
 
   // Order Job Card Routes
   Route::get('/order-job-card/pendinglist', [OrderJobCardController::class, 'index'])->name('order-job-list-pendinglist');
@@ -390,11 +398,11 @@ Route::middleware([CheckStatus::class])->group(function () {
 
   // setVendorType
   Route::post('/app/user/vendor-type', [UserList::class, 'setVendorType'])->name('setVendorType');
-Route::get('/app/user/list', [UserList::class, 'index'])->name('app-user-list');
-	Route::get('/app/user/add', [UserList::class, 'UserCreate'])->name('app-user-add');
+  Route::get('/app/user/list', [UserList::class, 'index'])->name('app-user-list');
+  Route::get('/app/user/add', [UserList::class, 'UserCreate'])->name('app-user-add');
   Route::get('/app/vendor/list', [UserList::class, 'vendorIndex'])->name('app-vendor-list');
   Route::put('/app/user/update/{id}', [UserList::class, 'update'])->name('app-user-update');
-	Route::post('/app/user/store', [UserList::class, 'UserStore'])->name('app-user-store');
+  Route::post('/app/user/store', [UserList::class, 'UserStore'])->name('app-user-store');
   Route::get('/app/user/view/account', [UserViewAccount::class, 'index'])->name('app-user-view-account');
   Route::get('/app/user/view/{id}', [UserViewAccount::class, 'show'])->name('app-user-view');
   Route::post('/app/user/vendorApprove', [UserList::class, 'vendorApprove'])->name('vendorApprove');
@@ -407,7 +415,7 @@ Route::get('/app/user/list', [UserList::class, 'index'])->name('app-user-list');
   Route::get('/app/company/view/{id}', [CompanyList::class, 'view'])->name('app-company-view');
   Route::get('/app/company/edit/{id}', [CompanyList::class, 'edit'])->name('app-company-edit');
   Route::put('/app/company/update/{id}', [CompanyList::class, 'update'])->name('app-company-update');
-Route::post('/app/company/ship-delete', [CompanyList::class, 'deleteShipAddress'])->name('app-company-ship-remove');
+  Route::post('/app/company/ship-delete', [CompanyList::class, 'deleteShipAddress'])->name('app-company-ship-remove');
 
   // pages
   Route::get('/pages/profile-user', [UserProfile::class, 'index'])->name('pages-profile-user');
@@ -426,20 +434,24 @@ Route::post('/app/company/ship-delete', [CompanyList::class, 'deleteShipAddress'
   Route::get('/pages/misc-comingsoon', [MiscComingSoon::class, 'index'])->name('pages-misc-comingsoon');
   Route::get('/pages/misc-not-authorized', [MiscNotAuthorized::class, 'index'])->name('pages-misc-not-authorized');
 
-
+  // Production Routes
   Route::get('/production/{id}', [ProductionController::class, 'index'])->name('production');
   Route::get('/production/pending-list/{d_id}', [ProductionController::class, 'pendingList'])->name('pending-list-wise');
   Route::get('/production/dashboard/{d_id}', [ProductionController::class, 'departmentDashboard'])->name('department-dashboard-wise');
   Route::get('/production/issue-to/{d_id}/{j_id}', [ProductionController::class, 'issueTo'])->name('issue-to');
   Route::get('/production/issue-to-on-floor/{d_id}/{j_id}/{imh_id}', [ProductionController::class, 'issueTo'])->name('issue-to-on-floor');
-
-  // Production Routes
   Route::get('/production/process', [ProductionController::class, 'process'])->name('production-process');
   Route::get('/production/pendingList', [ProductionController::class, 'pendingList'])->name('production-pendingList');
   Route::get('/production/pending-list', [ProductionController::class, 'pendinglist'])->name('pending-list');
   Route::get('/production/pending-history/{d_id}', [ProductionController::class, 'processHistory'])->name('processHistory');
   Route::post('/production/pendingListAjax', [ProductionController::class, 'pendingListAjax'])->name('pendingListAjax');
   Route::post('/production/processHistoryAjax', [ProductionController::class, 'processHistoryAjax'])->name('processHistoryAjax');
+
+  Route::get('/packaging/add', [ProductionController::class, 'packagingAdd'])->name('packagingAdd');
+  Route::get('/packaging/list', [ProductionController::class, 'packagingList'])->name('packagingList');
+  Route::post('/getStylePackaging', [ProductionController::class, 'getStylePackaging'])->name('getStylePackaging');
+  Route::post('/getColorPackaging', [ProductionController::class, 'getColorPackaging'])->name('getColorPackaging');
+  Route::post('/getSizeWiseDataPackaging', [ProductionController::class, 'getSizeWiseDataPackaging'])->name('getSizeWiseDataPackaging');
 
   //Admin issue manage
   Route::resource('issue', IssueManageController::class);
@@ -475,9 +487,9 @@ Route::post('/app/company/ship-delete', [CompanyList::class, 'deleteShipAddress'
 
 
   // Production- Process -Department Pending List:
-//  Route::get('/production/pending-list/', function () {
-//    return view('content.production.pendinglist');
-//  })->name('pending-list');
+  //  Route::get('/production/pending-list/', function () {
+  //    return view('content.production.pendinglist');
+  //  })->name('pending-list');
 
   // Production History :
 
@@ -501,5 +513,4 @@ Route::post('/app/company/ship-delete', [CompanyList::class, 'deleteShipAddress'
   Route::get('/production/process-transfer-jobCenter-printPreview/view', function () {
     return view('content.production.process-transfer.process-transfer-jobCenter-printPreview');
   })->name('process-transfer-preview');
-
 });

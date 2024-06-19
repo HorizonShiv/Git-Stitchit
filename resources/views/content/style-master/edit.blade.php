@@ -37,19 +37,21 @@
 
 
 @section('content')
+    @php
+        $requiredHtml = Helper::requiredHtml();
+    @endphp
 
     <h4 class="py-3 mb-4">
         <span class="text-muted fw-light float-left">Style /</span> Edit
     </h4>
-<form method="post" action="{{ route('style-master-update', $StyleMaster->id) }}"
-                        enctype="multipart/form-data">
-    <div class="row">
-        <div class="col-12">
+    <form method="post" action="{{ route('style-master-update', $StyleMaster->id) }}" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-12">
 
 
-            <div class="card">
-                {{-- <h5 class="card-header">Applicable Categories</h5> --}}
-                <div class="card-body">
+                <div class="card">
+                    {{-- <h5 class="card-header">Applicable Categories</h5> --}}
+                    <div class="card-body">
 
                         @csrf
                         @method('PUT')
@@ -66,23 +68,26 @@
                                 <div class="row g-4 mt-4">
                                     <div class="col-md-3">
                                         <label class="form-label" for="Style_date">Date</label>
+                                        {!! $requiredHtml !!}
                                         <input type="date" class="form-control date-picker" id="Style_date"
                                             name="Style_date" placeholder="YYYY-MM-DD"
                                             value="{{ $StyleMaster->style_date }}" />
                                     </div>
                                     <div class="col-md-3">
                                         <label class="form-label" for="Style_No">Style No</label>
+                                        {!! $requiredHtml !!}
                                         <input required type="text" id="Style_No" value="{{ $StyleMaster->style_no }}"
                                             name="Style_No" class="form-control" placeholder="Style No" />
                                     </div>
-									<div class="col-md-3">
+                                    <div class="col-md-3">
                                         <label class="form-label" for="Febric">Fabric</label>
                                         <input type="text" id="Febric" name="Febric" class="form-control"
                                             placeholder="Fabric" value="{{ $StyleMaster->febric }}" />
                                     </div>
-									
-									<div class="col-md-3">
+
+                                    <div class="col-md-3">
                                         <label class="form-label" for="Brand">Brand</label>
+                                        {!! $requiredHtml !!}
                                         <select required id="Brand" name="Brand" class="select2 select21 form-select"
                                             data-allow-clear="true" data-placeholder="Select Brand">
                                             <option value="">Select</option>
@@ -96,6 +101,7 @@
 
                                     <div class="col-md-3">
                                         <label class="form-label" for="Customer">Customer</label>
+                                        {!! $requiredHtml !!}
                                         <select required id="Customer" name="Customer" class="select2 select21 form-select"
                                             data-allow-clear="true" data-placeholder="Select Customer">
                                             <option value="">Select</option>
@@ -111,6 +117,7 @@
 
                                     <div class="col-md-3">
                                         <label class="form-label" for="Category">Category</label>
+                                        {!! $requiredHtml !!}
                                         <select required id="Category" name="Category" class="select2 select21 form-select"
                                             data-allow-clear="true" onchange="" data-placeholder="Select Category">
                                             <option value="">Select</option>
@@ -125,6 +132,7 @@
 
                                     <div class="col-md-3">
                                         <label class="form-label" for="SubCategory">Sub Category</label>
+                                        {!! $requiredHtml !!}
                                         <select required id="SubCategory" name="SubCategory" class="select2 form-select"
                                             data-allow-clear="true" data-placeholder="Select Sub Category">
                                             <option value="">Select</option>
@@ -138,6 +146,7 @@
 
                                     <div class="col-md-3">
                                         <label class="form-label" for="Demographic">Demographic</label>
+                                        {!! $requiredHtml !!}
                                         <select required id="Demographic" name="Demographic"
                                             class="select2 select21 form-select" data-allow-clear="true"
                                             data-placeholder="Select Demographic">
@@ -152,8 +161,10 @@
 
                                     <div class="col-md-3">
                                         <label class="form-label" for="Fit">Fit</label>
-                                        <select required id="Fit" name="Fit" class="select2 select21 form-select"
-                                            data-allow-clear="true" data-placeholder="Select Fit">
+                                        {!! $requiredHtml !!}
+                                        <select required id="Fit" name="Fit"
+                                            class="select2 select21 form-select" data-allow-clear="true"
+                                            data-placeholder="Select Fit">
                                             <option value="">Select</option>
                                             @foreach (\App\Models\Fit::all() as $data)
                                                 <option {{ $StyleMaster->fit_id == $data->id ? 'Selected' : '' }}
@@ -164,6 +175,7 @@
 
                                     <div class="col-md-3">
                                         <label class="form-label" for="Season">Season</label>
+                                        {!! $requiredHtml !!}
                                         <select required id="Season" name="Season"
                                             class="select2 select21 form-select" data-allow-clear="true"
                                             data-placeholder="Select Season">
@@ -176,23 +188,22 @@
                                     </div>
 
 
-                                        <div class="col-md-3">
-                                            <label class="form-label" for="Designer">Designer</label>
-                                            <select id="Designer" name="Designer"
-                                                class="select2 select21 form-select" data-allow-clear="true"
-                                                data-placeholder="Select Designer">
-                                                <option value="">Select</option>
-                                                @foreach (\App\Models\User::where('role', 'designer')->get() as $user)
-                                                    <option {{ $StyleMaster->designer_id == $user->id ? 'Selected' : '' }}
-                                                        value="{{ $user->id }}">{{ $user->company_name }} -
-                                                        {{ $user->person_name }}</option>
-                                                @endforeach
+                                    <div class="col-md-3">
+                                        <label class="form-label" for="Designer">Designer</label>
+                                        <select id="Designer" name="Designer" class="select2 select21 form-select"
+                                            data-allow-clear="true" data-placeholder="Select Designer">
+                                            <option value="">Select</option>
+                                            @foreach (\App\Models\User::where('role', 'designer')->get() as $user)
+                                                <option {{ $StyleMaster->designer_id == $user->id ? 'Selected' : '' }}
+                                                    value="{{ $user->id }}">{{ $user->company_name }} -
+                                                    {{ $user->person_name }}</option>
+                                            @endforeach
 
-                                            </select>
-                                        </div>
-                                
-									
-									<div class="col-md-3">
+                                        </select>
+                                    </div>
+
+
+                                    <div class="col-md-3">
                                         <label class="form-label" for="Merchant">Merchant</label>
                                         <select id="Merchant" name="Merchant" class="select2 select21 form-select"
                                             data-allow-clear="true" data-placeholder="Select Merchant">
@@ -239,16 +250,13 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label class="form-label" for="sample_photo">Sample Photo</label>
-                                        <input type="file" id="sample_photo" name="sample_photo" class="form-control"
-                                            placeholder="Sample Photo" />
+                                        {{-- <label class="form-label" for="sample_photo">Sample Photo</label>
+                                      <input type="file" id="sample_photo" name="sample_photo" class="form-control"
+                                          placeholder="Sample Photo" /> --}}
 
-                                        @if (!empty($StyleMaster->sample_photo))
-                                            <p class="mt-2"><a target="_blank"
-                                                    href="{{ Helper::getSamplePhoto($StyleMaster->id, $StyleMaster->sample_photo) }}"
-                                                    target="_blank">
-                                                    :-- Download</a></p>
-                                        @endif
+                                        <label class="form-label" for="sample_photo">Sample Photo</label>
+                                        <input type="file" id="sample_photo" name="sample_photo[]"
+                                            class="form-control" placeholder="Sample Photo" multiple />
                                     </div>
 
                                     <div class="col-md-3">
@@ -317,12 +325,35 @@
                             </div>
                         </div>
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-	   <div id="bomSheetContainer">
+        @if (!empty($SamplePhotos))
+            <div class="card mt-4">
+                <h5 class="card-header">Sample Photos</h5>
+                <div class="card-body">
+                    <div class="content">
+                        <div class="row g-4">
+                            @foreach ($SamplePhotos as $name => $photos)
+                                <div class="col-md-2">
+                                    <a href="{{ $photos }}" target="_blank">
+                                        <img width="100px" height="75px" src="{{ $photos }}"
+                                            alt="Sample Photo">
+                                    </a>
+                                    <button type="button" class="btn btn-icon btn-label-danger mx-2"
+                                        onclick="DeleteStyleImage({{ $StyleMaster->id }},'{{ $name }}')"><i
+                                            class="ti ti-trash mx-2 ti-sm"></i></button>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        <div id="bomSheetContainer">
 
             <h4 class="mt-5">
                 <span class="text-muted fw-light float-left">BOM Sheet/</span> Edit
@@ -532,7 +563,7 @@
                 </div>
             </div>
         </div>
-		 <div class="row px-0 mt-5">
+        <div class="row px-0 mt-5">
             <div class="col-lg-2 col-md-12 col-sm-12">
                 <button type="submit" class="btn btn-primary d-grid w-100">Save</button>
             </div>
@@ -543,11 +574,45 @@
                 </button>
             </div>
         </div>
-		
-</form>
+
+    </form>
 
 @endsection
 <script>
+    function DeleteStyleImage(styleId, ImageName) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: false,
+            confirmButtonText: "Yes, Approve it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $("#overlay").fadeIn(100);
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('style-image-delete') }}',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        styleId: styleId,
+                        imageName: ImageName,
+                        "_token": "{{ csrf_token() }}"
+                    },
+                    success: function(resultData) {
+                        Swal.fire('Done', 'Successfully! Done', 'success').then(() => {
+                            location.reload();
+                            $("#overlay").fadeOut(100);
+                        });
+                    }
+                });
+            }
+        });
+
+    }
+
+
     // $(".select21").select2();
     // Check selected custom option
     window.Helpers.initCustomOptionCheck();
@@ -555,9 +620,9 @@
     $(document).ready(function() {
         $(".select21").select2();
     });
-	
-	
-	 function addItem(dataId) {
+
+
+    function addItem(dataId) {
 
         var container = document.getElementById(dataId);
         var rowCount = container.getElementsByClassName('row').length;
@@ -794,7 +859,6 @@
         document.getElementById('rawRequiredQty' + num).value = qty.toFixed(2);
         document.getElementById('rawTotal' + num).value = value.toFixed(2);
     }
-	
 </script>
 <script>
     // // Add this code to generate CSRF token

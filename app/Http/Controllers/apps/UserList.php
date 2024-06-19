@@ -25,27 +25,28 @@ class UserList extends Controller
     }
     return view('content.apps.app-user-list', compact("users"));
   }
-	
-	
+
+
   public function UserCreate()
   {
     return view('content.apps.app-user-add');
   }
-	
-	
+
+
   public function UserStore(Request $request)
   {
-	  
-	    $this->validate(request(), [
-      'company_name' => 'required',
+
+    $this->validate(request(), [
+      // 'company_name' => 'required',
       'contact_person_name' => 'required',
       'contact_person_mobile' => 'required',
       'email' => 'required',
-      'gst_no' => 'required',
-      'b_address1' => 'required',
-      'b_city' => 'required',
-      'b_state' => 'required',
-      'b_pincode' => 'required',
+      'role' => 'required',
+      // 'gst_no' => 'required',
+      // 'b_address1' => 'required',
+      // 'b_city' => 'required',
+      // 'b_state' => 'required',
+      // 'b_pincode' => 'required',
     ]);
 
     $user = new User([
@@ -63,22 +64,22 @@ class UserList extends Controller
     $user->save();
     $user_id = $user->id;
     if ($user) {
-      $userAddress = new UserAddress([
-        'user_id' => $user_id,
-        'b_address1' => $request->b_address1,
-        'b_address2' => $request->b_address2,
-        'b_city' => $request->b_city,
-        'b_state' => $request->b_state,
-        'b_pincode' => $request->b_pincode,
-        'b_mobile' => $request->b_mobile,
-        's_address1' => $request->s_address1,
-        's_address2' => $request->s_address2,
-        's_city' => $request->s_city,
-        's_state' => $request->s_state,
-        's_pincode' => $request->s_pincode,
-        's_mobile' => $request->s_mobile
-      ]);
-      $userAddress->save();
+      // $userAddress = new UserAddress([
+      //   'user_id' => $user_id,
+      //   'b_address1' => $request->b_address1,
+      //   'b_address2' => $request->b_address2,
+      //   'b_city' => $request->b_city,
+      //   'b_state' => $request->b_state,
+      //   'b_pincode' => $request->b_pincode,
+      //   'b_mobile' => $request->b_mobile,
+      //   's_address1' => $request->s_address1,
+      //   's_address2' => $request->s_address2,
+      //   's_city' => $request->s_city,
+      //   's_state' => $request->s_state,
+      //   's_pincode' => $request->s_pincode,
+      //   's_mobile' => $request->s_mobile
+      // ]);
+      // $userAddress->save();
 
       $userBank = new UserBank([
         'user_id' => $user_id,
@@ -152,7 +153,7 @@ class UserList extends Controller
     }
   }
 
-	public function vendorIndex()
+  public function vendorIndex()
   {
     if ((Auth::user()->role == 'vendor')) {
       $users = User::where("id", Auth::user()->id)->get();
@@ -679,14 +680,13 @@ class UserList extends Controller
 
 
       return redirect()->action([UserList::class, 'index'])->withSuccess('Data Update successfully');
-
     } else {
       return response()->json(['status' => 'error', 'message' => 'Already Exit email ID']);
     }
   }
 
-	public function setVendorType(Request $request)
-	{
+  public function setVendorType(Request $request)
+  {
 
     $User = User::where('id', $request->vendor_d)->update([
       'vendor_type' => $request->vendor_name,
@@ -694,9 +694,8 @@ class UserList extends Controller
 
     // dd($request->toArray());
 
-    if($User){
+    if ($User) {
       echo 'success';
     }
   }
-
 }

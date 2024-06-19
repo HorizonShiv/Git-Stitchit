@@ -217,6 +217,12 @@ class ProductionController extends Controller
 
 
       $htmlTable .= '</table></div>';
+      $htmlTable . '<div class="row">';
+      $htmlTable . '<div class="col-lg-8"></div>';
+      $htmlTable . '<div class="col-lg-4">ss</div>';
+      $htmlTable . '<div class="col-lg-8"></div>';
+      $htmlTable . '<div class="col-lg-4">ss</div>';
+      $htmlTable . '</div>';
     }
 
     $itemMasters = Item::all();
@@ -458,13 +464,11 @@ class ProductionController extends Controller
                       class="ti ti-transfer-in mx-2 ti-sm"></i></button>';
         }
 
-        $result["data"][] = array($num, $date, $jobOrderNo, $companyHtml, $dHtml, $attachmentHtml, $styleNo, $JobOrderQty, $catSubCateHtml, $processHtmlFrom,$processHtmlTo, $jobType, $fileHtml, $actionHtml);
+        $result["data"][] = array($num, $date, $jobOrderNo, $companyHtml, $dHtml, $attachmentHtml, $styleNo, $JobOrderQty, $catSubCateHtml, $processHtmlFrom, $processHtmlTo, $jobType, $fileHtml, $actionHtml);
         $num++;
       }
     }
     echo json_encode($result);
-
-
   }
 
 
@@ -615,7 +619,6 @@ class ProductionController extends Controller
             </div>
           </div>';
       }
-
     }
     return $htmlTable;
   }
@@ -835,7 +838,6 @@ class ProductionController extends Controller
         $ids = ['d_id' => $old_department_id, 'j_id' => $job_order_id];
         return redirect()->route('issue-to', $ids)->withErrors('Something is wrong!!!');
       }
-
     } else {
       $ids = ['d_id' => $old_department_id, 'j_id' => $job_order_id];
       return redirect()->route('issue-to', $ids)->withErrors('Something is wrong!!!');
@@ -1074,5 +1076,107 @@ class ProductionController extends Controller
     $IssueManages = IssueManage::with(["IssueManageHistory.IssueParameters"])->where("rQty", ">", 0)->where('department_id', $id)->get();
     $department = Department::where("id", $id)->first();
     return view('content.production.dashboard', compact("department", "IssueManages"));
+  }
+
+
+  public function packagingAdd()
+  {
+    return view('content.packaging.create');
+  }
+
+  public function packagingList()
+  {
+    return view('content.packaging.list');
+  }
+
+  public function getStylePackaging(Request $request)
+  {
+    $styleNos = [
+      [
+        'id' => 1,
+        'name' => 'TEST1',
+      ],
+      [
+        'id' => 2,
+        'name' => 'TEST2',
+      ],
+      [
+        'id' => 3,
+        'name' => 'TEST3',
+      ]
+    ];
+    return response()->json($styleNos);
+  }
+
+  public function getColorPackaging(Request $request)
+  {
+    $color = [
+      [
+        'id' => 'RED',
+        'name' => 'RED',
+      ],
+      [
+        'id' => 'BLACK',
+        'name' => 'BLACK',
+      ],
+      [
+        'id' => 'WHITE',
+        'name' => 'WHITE',
+      ]
+    ];
+    return response()->json($color);
+  }
+
+  public function getSizeWiseDataPackaging(Request $request)
+  {
+
+    $TableHtml = '
+      <div>
+          <table id="SizeRatios" class="center table border table-responsive mb-4">
+              <thead>
+                  <tr>
+                  <th class="text-dark text-center">Carton Number</th>
+                      <th class="text-dark text-center">Size</th>
+                      <th class="border text-center">28</th>
+                      <th class="border text-center">30</th>
+                      <th class="border text-center">34</th>
+                      <th class="border text-dark text-center" colspan="2">Total Qty</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td></td>
+                      <td class="text-dark text-center">FG Qty</td>
+                      <td class="border bg-light">5</td>
+                      <td class="border bg-light">9</td>
+                      <td class="border bg-light">7</td>
+                      <td class="text-center">21</td>
+                  </tr>
+                  <tr class="filledRow">
+                      <td class="text-center"><input type="text" class="form-control" value="" name="cartonNumber[]" id="cartonNumber" required></td>
+                      <td class="text-dark text-center">Filled Qty</td>
+                      <td class="border"><input class="form-control" type="number" name="SizeWiseQty[RED][28][]" value="2"></td>
+                      <td class="border"><input class="form-control" type="number"  name="SizeWiseQty[RED][30][]" value="6"></td>
+                      <td class="border"><input class="form-control" type="number"  name="SizeWiseQty[RED][34][]" value="4"></td>
+                      <td class="text-dark text-center" id="TotalColorRED">12</td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+        <div class="col-lg-12 col-12 invoice-actions mt-3">
+              <button type="button" onclick="AddRow()"
+                  class="btn rounded-pill btn-icon btn-label-primary waves-effect">
+                  <span class="ti ti-plus"></span>
+              </button>
+
+              <button type="button" onclick="removeRow()"
+                  class="btn rounded-pill btn-icon btn-label-danger waves-effect">
+                  <span class="ti ti-minus"></span>
+              </button>
+
+          </div>
+      ';
+
+    return response()->json(['html' => $TableHtml]);
   }
 }

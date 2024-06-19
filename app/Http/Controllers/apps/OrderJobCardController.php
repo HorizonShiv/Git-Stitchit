@@ -19,6 +19,7 @@ use App\Models\StyleCategory;
 use App\Models\StyleSubCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class OrderJobCardController extends Controller
 {
@@ -32,7 +33,25 @@ class OrderJobCardController extends Controller
     $groupedSizes = $JobOrders->JobOrderParameters->groupBy('size');
     $groupedColors = $JobOrders->JobOrderParameters->groupBy('color');
 
-    return view('content.order-job-card.printReport', compact("JobOrders", "groupedSizes", "groupedColors", "PlaningOrders"));
+    if ($JobOrders->type == 'regular') {
+      $StyleData = $JobOrders->SalesOrderStyleInfo->StyleMaster;
+    } else {
+      $StyleData = $JobOrders->StyleMaster;
+    }
+
+    $directory = public_path('/samplePhoto/' . $StyleData->id . '/');
+    $SamplePhotos = [];
+    // if (is_dir(public_path($directory))) {
+
+    if (file_exists($directory)) {
+
+      $files = File::files($directory);
+      foreach ($files as $file) {
+        $SamplePhotos[$file->getFilename()] = asset('/samplePhoto/' . $StyleData->id . '/' . $file->getFilename());
+      }
+    }
+
+    return view('content.order-job-card.printReport', compact("JobOrders", "groupedSizes", "groupedColors", "PlaningOrders", "SamplePhotos"));
   }
 
   public function index()
@@ -267,7 +286,7 @@ class OrderJobCardController extends Controller
                   class="ti ti-transfer-in mx-2 ti-sm"></i></button>';
 
         $actionHtml .= '<a class="btn btn-icon btn-label-success mt-1 mx-1"
-                      href="' . route('issue.all-index',$JobOrder->id) . '"><i
+                      href="' . route('issue.all-index', $JobOrder->id) . '"><i
                   class="ti ti-history mx-2 ti-sm"></i></button>';
 
         $result["data"][] = array($num, $date, $jobOrderNo, $companyHtml, $dHtml, $attachmentHtml, $styleNo, $JobOrderQty, $catSubCateHtml, $processHtml, $jobType, $fileHtml, $actionHtml);

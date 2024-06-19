@@ -191,8 +191,8 @@ class POManage extends Controller
 
   public function requestlist()
   {
-    $poPlaningOrders = PoPlaningOrders::with("Item","PlaningOrders")->get();
-    return view('content.apps.app-po-requestlist',compact("poPlaningOrders"));
+    $poPlaningOrders = PoPlaningOrders::with("Item", "PlaningOrders")->get();
+    return view('content.apps.app-po-requestlist', compact("poPlaningOrders"));
   }
 
   public function indexWithInvoice()
@@ -212,13 +212,13 @@ class POManage extends Controller
     return view('content.apps.app-po-invoice-list', compact("poItems"));
   }
 
-//  public function poDelete(Request $request)
-//  {
-//    $id = $request->id;
-//    PoItem::where('po_id', $id)->delete();
-//    Po::where('id', $id)->delete();
-//    echo 'success';
-//  }
+  public function poDelete(Request $request)
+  {
+    $id = $request->id;
+    PoItem::where('po_id', $id)->delete();
+    Po::where('id', $id)->delete();
+    echo 'success';
+  }
 
 
   public function getVendorDetails(Request $request)
@@ -347,7 +347,6 @@ class POManage extends Controller
             'user_id' => $user_id,
           ]);
           $userBank->save();
-
         }
         $checkPo = Po::where('denimax_po_id', $responseData->id)->first();
         if (!$checkPo) {
@@ -399,9 +398,9 @@ class POManage extends Controller
   {
     $Item = Item::with("ItemSubCategory")->orderBy('id', 'asc')->get();
     $ShippingAddress =  CompanyShipAddress::orderBy('id', 'asc')->get();
-    $Users =  User::with("UserAddress")->where('vendor_type','SUPPLIER')->orderBy('id', 'asc')->get();
+    $Users =  User::with("UserAddress")->where('vendor_type', 'SUPPLIER')->orderBy('id', 'asc')->get();
     // $VendorSupplier = $Users->toArray();
-    return view('content.apps.app-po-add',compact("Item",'ShippingAddress','Users'));
+    return view('content.apps.app-po-add', compact("Item", 'ShippingAddress', 'Users'));
   }
 
   public function poAddStore(Request $request)
@@ -420,16 +419,16 @@ class POManage extends Controller
       return redirect()->action([POManage::class, 'poAddView'])->withErrors('PO Number Already Exit!');
     }
 
-    if(empty($request->vendor_id)){
-      $VendorShipping=null;
-    }else{
-      $VendorShipping=$request->vendor_id;
+    if (empty($request->vendor_id)) {
+      $VendorShipping = null;
+    } else {
+      $VendorShipping = $request->vendor_id;
     }
 
-    if(empty($request->shipping_id)){
-      $shippingId=null;
-    }else{
-      $shippingId=$request->shipping_id;
+    if (empty($request->shipping_id)) {
+      $shippingId = null;
+    } else {
+      $shippingId = $request->shipping_id;
     }
 
     // dd($request);
@@ -440,7 +439,7 @@ class POManage extends Controller
       'd_date' => $request->d_date,
       'company_id' => $request->company_id,
       'company_shipping_id' => $shippingId,
-      'vendor_shiping_id'=> $VendorShipping,
+      'vendor_shiping_id' => $VendorShipping,
       'po_amount' => $request->po_amount,
       'sub_total_amount' => $request->sub_total_amount,
       'discount_amount' => 0,
@@ -465,29 +464,29 @@ class POManage extends Controller
       }
 
       // dd($request['group-a']);
-      $temp=1;
+      $temp = 1;
       if (count($request['group-a']) > 0) {
         foreach ($request['group-a'] as $item) {
 
           $parts = explode('_', $item['item_name']);
-            if (isset($parts[0]) && isset($parts[1])) {
-                $poItem = new PoItem([
-                    'po_id' => $poId,
-                    'item_id' => $parts[0],
-                    'item_name' => $parts[1],
-                    'item_description' => $item['item_description'],
-                    'excessInwardAllowedPercent' => $item['excessInwardAllowedPercent'],
-                    'hsn' => $item['hsn'],
-                    'rate' => $item['rate'],
-                    'qty' => $item['qty'],
-                    'without_tax_amount' => $item['itemAmountWithRateQty'],
-                    'tax' => $item['taxValue'],
-                    'tax_percentage' => isset($item['tax']) ? $item['tax'] : 0,
-                    'uom' => $item['uom'],
-                    'amount' => $item['amount']
-                ]);
-                $poItem->save();
-            }
+          if (isset($parts[0]) && isset($parts[1])) {
+            $poItem = new PoItem([
+              'po_id' => $poId,
+              'item_id' => $parts[0],
+              'item_name' => $parts[1],
+              'item_description' => $item['item_description'],
+              'excessInwardAllowedPercent' => $item['excessInwardAllowedPercent'],
+              'hsn' => $item['hsn'],
+              'rate' => $item['rate'],
+              'qty' => $item['qty'],
+              'without_tax_amount' => $item['itemAmountWithRateQty'],
+              'tax' => $item['taxValue'],
+              'tax_percentage' => isset($item['tax']) ? $item['tax'] : 0,
+              'uom' => $item['uom'],
+              'amount' => $item['amount']
+            ]);
+            $poItem->save();
+          }
         }
       }
       // dd($temp);
@@ -517,7 +516,7 @@ class POManage extends Controller
 
   public function show($id)
   {
-    $po = Po::with(["Company", "PoItem.GrnItem","CompanyShipAddress","UserAddress.User"])->where('id', $id)->first();
+    $po = Po::with(["Company", "PoItem.GrnItem", "CompanyShipAddress", "UserAddress.User"])->where('id', $id)->first();
     // dd($po->toArray());
     return view('content.apps.app-po-preview', compact("po"));
   }
@@ -624,7 +623,7 @@ class POManage extends Controller
   public function printPO($id)
   {
     // $po = Po::with(["Company","CompanyShipAddress"])->where('id', $id)->first();
-    $po = Po::with(["Company", "PoItem.GrnItem","CompanyShipAddress","UserAddress.User"])->where('id', $id)->first();
+    $po = Po::with(["Company", "PoItem.GrnItem", "CompanyShipAddress", "UserAddress.User"])->where('id', $id)->first();
     return view('content.apps.app-po-print', compact("po"));
   }
 
@@ -662,5 +661,4 @@ class POManage extends Controller
     }
     echo 'success';
   }
-
 }

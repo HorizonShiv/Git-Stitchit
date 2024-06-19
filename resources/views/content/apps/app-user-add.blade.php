@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Add - Invoice')
+@section('title', 'Add - User')
 
 @section('vendor-style')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" />
@@ -60,26 +60,26 @@
                                             <option value="designer">Designer</option>
                                         </select>
                                     </div>
-                                    <div class="col-sm-6">
+                                    {{-- <div class="col-sm-6">
                                         <label class="form-label" for="company_name">Company Name </label>
                                         <input type="text" name="company_name" id="company_name" class="form-control"
                                             placeholder="enter company name">
-                                    </div>
-                                    <div class="col-sm-6">
+                                    </div> --}}
+                                    <div class="col-sm-4">
                                         <label class="form-label" for="contact_person_name">Contact Person Name
                                         </label>
                                         <input type="text" name="contact_person_name" value=""
                                             id="contact_person_name" class="form-control"
                                             placeholder="enter contact person name">
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                         <label class="form-label" for="contact_person_mobile">Contact Person
                                             Mobile </label>
                                         <input type="text" name="contact_person_mobile" value=""
                                             id="contact_person_mobile" class="form-control"
                                             placeholder="enter contact person mobile">
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                         <label class="form-label" for="email">Email</label>
                                         <input type="email" name="email" id="email" class="form-control"
                                             placeholder="john.doe@email.com" aria-label="john.doe">
@@ -100,12 +100,11 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <label class="form-label" for="pancard_file">PanCard File</label>
-                                        <input type="file" name="pancard_file" id="pancard_file"
-                                            class="form-control">
+                                        <input type="file" name="pancard_file" id="pancard_file" class="form-control">
                                     </div>
                                 </div>
                             </div>
-                            <div class="mt-2 content">
+                            {{-- <div class="mt-2 content">
                                 <div class="content-header">
                                     <h3 class="mb-1">Billing Information</h3>
                                     <p>Enter Your Billing Information</p>
@@ -183,86 +182,8 @@
                                             maxlength="6">
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
-                            <div class="mt-3 content" hidden="">
-                                <div class="content-header">
-                                    <h3 class="mb-1">Shipping Information</h3>
-                                    <p>Enter Your Shipping Information</p>
-                                </div>
-                                <div class="row g-3">
-                                    <div class="col-md-12">
-                                        <label class="form-label" for="s_address1">Address Line 1</label>
-                                        <input type="text" id="s_address1" value="" name="s_address1"
-                                            class="form-control" placeholder="Address Line 1">
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label class="form-label" for="s_address2">Address Line 2</label>
-                                        <input type="text" id="s_address2" name="s_address2" value=""
-                                            class="form-control" placeholder="Address Line 2">
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label class="form-label" for="s_city">City</label>
-                                        <input type="text" id="s_city" name="s_city" value=""
-                                            class="form-control" placeholder="city">
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label class="form-label" for="s_state">State</label>
-                                        <select id="s_state" name="s_state" class="select2 form-select"
-                                            data-allow-clear="true">
-                                            <option value=""></option>
-                                            <option value="">Select</option>
-                                            <option value="Andra Pradesh">Andra Pradesh</option>
-                                            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                                            <option value="Assam">Assam</option>
-                                            <option value="Bihar">Bihar</option>
-                                            <option value="Chhattisgarh">Chhattisgarh</option>
-                                            <option value="Goa">Goa</option>
-                                            <option value="Gujarat">Gujarat</option>
-                                            <option value="Haryana">Haryana</option>
-                                            <option value="Himachal Pradesh">Himachal Pradesh</option>
-                                            <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-                                            <option value="Jharkhand">Jharkhand</option>
-                                            <option value="Karnataka">Karnataka</option>
-                                            <option value="Kerala">Kerala</option>
-                                            <option value="Madya Pradesh">Madya Pradesh</option>
-                                            <option value="Maharashtra">Maharashtra</option>
-                                            <option value="Manipur">Manipur</option>
-                                            <option value="Meghalaya">Meghalaya</option>
-                                            <option value="Mizoram">Mizoram</option>
-                                            <option value="Nagaland">Nagaland</option>
-                                            <option value="Orissa">Orissa</option>
-                                            <option value="Punjab">Punjab</option>
-                                            <option value="Rajasthan">Rajasthan</option>
-                                            <option value="Sikkim">Sikkim</option>
-                                            <option value="Tamil Nadu">Tamil Nadu</option>
-                                            <option value="Telangana">Telangana</option>
-                                            <option value="Tripura">Tripura</option>
-                                            <option value="Uttaranchal">Uttaranchal</option>
-                                            <option value="Uttar Pradesh">Uttar Pradesh</option>
-                                            <option value="West Bengal">West Bengal</option>
-                                            <option disabled="" style="background-color:#aaa; color:#fff">
-                                                UNION Territories</option>
-                                            <option value="Andaman and Nicobar Islands">Andaman and Nicobar
-                                                Islands</option>
-                                            <option value="Chandigarh">Chandigarh</option>
-                                            <option value="Dadar and Nagar Haveli">Dadar and Nagar Haveli
-                                            </option>
-                                            <option value="Daman and Diu">Daman and Diu</option>
-                                            <option value="Delhi">Delhi</option>
-                                            <option value="Lakshadeep">Lakshadeep</option>
-                                            <option value="Pondicherry">Pondicherry</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-sm-4">
-                                        <label class="form-label" for="s_pincode">Pincode</label>
-                                        <input type="text" id="s_pincode" name="s_pincode"
-                                            class="form-control multi-steps-pincode" value=""
-                                            placeholder="Pin Code" maxlength="6">
-                                    </div>
-                                </div>
-                            </div>
                             <div class="content-header mt-4">
                                 <h3>Bank Details</h3>
                             </div>

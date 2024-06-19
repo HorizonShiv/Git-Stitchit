@@ -25,109 +25,121 @@
 @endsection
 
 @section('content')
-            <h4 class="py-3 mb-4"><span class="text-muted fw-light">Warehouse /</span> Dashboard</h4>
+    <h4 class="py-3 mb-4"><span class="text-muted fw-light">Warehouse /</span> Dashboard</h4>
 
-            <!-- Block UI -->
-            <div class="row">
+    <!-- Block UI -->
+    <div class="row">
 
-                <!-- User Data -->
-                <div class="col-xl-12 col-12">
-                    <div class="card mb-4" id="card-block">
-                        <h5 class="card-header">Information</h5>
-                        <div class="card-body">
-                            <div class="block-ui-btn demo-inline-spacing">
+        <!-- User Data -->
+        <div class="col-xl-12 col-12">
+            <div class="card mb-4" id="card-block">
+                <h5 class="card-header">Information</h5>
+                <div class="card-body">
+                    <div class="block-ui-btn demo-inline-spacing">
 
-                                <div class="btn-group mb-2">
-                                    <button type="button" class="btn btn-label-primary dropdown-toggle"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="menu-icon tf-icons ti ti-truck"></i>GRN Manage
-                                    </button>
-                                    <div class="dropdown-menu" style="">
-                                        <a class="dropdown-item" href="{{ url('app/grn/add') }}"><i
-                                                class="ti ti-pencil me-1"></i>
-                                            Add</a>
-                                        <a class="dropdown-item" href="{{ url('app/grn/list') }}"><i
-                                                class="ti ti-eye me-1"></i>
-                                            View</a>
-                                    </div>
-                                </div>
-
-                                <div class="btn-group mb-2">
-                                    <button type="button" class="btn btn-label-primary dropdown-toggle"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="menu-icon tf-icons ti ti-truck"></i>Invenotry
-                                    </button>
-                                    <div class="dropdown-menu" style="">
-
-                                        <a class="dropdown-item" href="{{ route('inventory-list') }}"><i
-                                                class="ti ti-eye me-1"></i>
-                                            View</a>
-
-                                        <a class="dropdown-item" href="{{ route('inventory-history') }}"><i
-                                                class="ti ti-book me-1"></i>
-                                            History</a>
-
-                                        <a class="dropdown-item" href="#"><i class="ti ti-clock me-1"></i>
-                                            Back-Up</a>
-                                    </div>
-                                </div>
-
-
-                                <div class="btn-group mb-2">
-                                    <button type="button" class="btn btn-label-primary dropdown-toggle"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="menu-icon tf-icons ti ti-truck"></i>Outward
-                                    </button>
-                                    <div class="dropdown-menu" style="">
-                                        <a class="dropdown-item" href="{{ url('/app/outward') }}"><i
-                                                class="ti ti-pencil me-1"></i>
-                                            Add</a>
-                                        <a class="dropdown-item" href="{{ route('warehouse-outward-list') }}"><i
-                                                class="ti ti-eye me-1"></i>
-                                            View</a>
-                                    </div>
-                                </div>
-
-                                <div class="btn-group mb-2">
-                                    <button type="button" class="btn btn-label-primary dropdown-toggle"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="menu-icon tf-icons ti ti-truck"></i>GR TO Supplier
-                                    </button>
-                                    <div class="dropdown-menu" style="">
-                                        <a class="dropdown-item" href="{{ route('warehouse-gr-supplier') }}"><i
-                                                class="ti ti-pencil me-1"></i>
-                                            Add</a>
-                                        <a class="dropdown-item" href="{{ route('gr-supplier-list') }}"><i
-                                                class="ti ti-eye me-1"></i>
-                                            View</a>
-                                    </div>
-                                </div>
-
-                                <div class="btn-group mb-2">
-                                    <button type="button" class="btn btn-label-primary dropdown-toggle"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="menu-icon tf-icons ti ti-truck"></i>Warehouse Transfer
-                                    </button>
-                                    <div class="dropdown-menu" style="">
-                                        <a class="dropdown-item" href="{{ url('/app/app-warehouse-transfer') }}"><i
-                                                class="ti ti-pencil me-1"></i>
-                                            Add</a>
-                                        <a class="dropdown-item" href="{{ route('warehouse-transfer-list') }}"><i
-                                                class="ti ti-eye me-1"></i>
-                                            View</a>
-                                    </div>
-                                </div>
-
-
+                        <div class="btn-group mb-2">
+                            <button type="button" class="btn btn-label-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="menu-icon tf-icons ti ti-truck"></i>GRN Manage
+                            </button>
+                            <div class="dropdown-menu" style="">
+                                <a class="dropdown-item" href="{{ url('app/grn/add') }}"><i class="ti ti-pencil me-1"></i>
+                                    Add</a>
+                                <a class="dropdown-item" href="{{ url('app/grn/list') }}"><i class="ti ti-eye me-1"></i>
+                                    View</a>
                             </div>
                         </div>
+
+                        <div class="btn-group mb-2">
+                            <button type="button" class="btn btn-label-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="menu-icon tf-icons ti ti-truck"></i>Invenotry
+                            </button>
+                            <div class="dropdown-menu" style="">
+
+                                <a class="dropdown-item" href="{{ route('inventory-list') }}"><i
+                                        class="ti ti-eye me-1"></i>
+                                    View</a>
+
+                                <a class="dropdown-item" href="{{ route('inventory-history') }}"><i
+                                        class="ti ti-book me-1"></i>
+                                    History</a>
+
+                                <a class="dropdown-item" href="#"><i class="ti ti-clock me-1"></i>
+                                    Back-Up</a>
+                            </div>
+                        </div>
+
+
+                        <div class="btn-group mb-2">
+                            <button type="button" class="btn btn-label-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="menu-icon tf-icons ti ti-truck"></i>Outward
+                            </button>
+                            <div class="dropdown-menu" style="">
+                                <a class="dropdown-item" href="{{ url('/app/outward') }}"><i class="ti ti-pencil me-1"></i>
+                                    Add</a>
+                                <a class="dropdown-item" href="{{ route('warehouse-outward-list') }}"><i
+                                        class="ti ti-eye me-1"></i>
+                                    View</a>
+                            </div>
+                        </div>
+
+                        <div class="btn-group mb-2">
+                            <button type="button" class="btn btn-label-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="menu-icon tf-icons ti ti-truck"></i>GR TO Supplier
+                            </button>
+                            <div class="dropdown-menu" style="">
+                                <a class="dropdown-item" href="{{ route('warehouse-gr-supplier') }}"><i
+                                        class="ti ti-pencil me-1"></i>
+                                    Add</a>
+                                <a class="dropdown-item" href="{{ route('gr-supplier-list') }}"><i
+                                        class="ti ti-eye me-1"></i>
+                                    View</a>
+                            </div>
+                        </div>
+
+                        <div class="btn-group mb-2">
+                            <button type="button" class="btn btn-label-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="menu-icon tf-icons ti ti-truck"></i>Warehouse Transfer
+                            </button>
+                            <div class="dropdown-menu" style="">
+                                <a class="dropdown-item" href="{{ route('out-warehouse-transfer') }}"><i
+                                        class="ti ti-pencil me-1"></i>
+                                    Add</a>
+                                <a class="dropdown-item" href="{{ route('warehouse-transfer-list') }}"><i
+                                        class="ti ti-eye me-1"></i>
+                                    View</a>
+                            </div>
+                        </div>
+
+                        <div class="btn-group mb-2">
+                            <button type="button" class="btn btn-label-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="menu-icon tf-icons ti ti-truck"></i>Warehouse Inward
+                            </button>
+                            <div class="dropdown-menu" style="">
+                                <a class="dropdown-item" href="{{ route('in-warehouse-transfer') }}"><i
+                                        class="ti ti-pencil me-1"></i>
+                                    Add</a>
+                                <a class="dropdown-item" href="{{ route('warehouse-inward-list') }}"><i
+                                        class="ti ti-eye me-1"></i>
+                                    View</a>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
-                <!-- User Data -->
-
-
             </div>
-            <!-- /Block UI -->
+        </div>
+        <!-- User Data -->
+
+
+    </div>
+    <!-- /Block UI -->
 
 
 @endsection

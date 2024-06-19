@@ -10,6 +10,10 @@ use App\Models\StyleMaster;
 class Helpers
 {
 
+  public static function requiredHtml()
+  {
+    return '<span class="text-danger"><strong>*</strong></span>';
+  }
 
   public static function formateDate($date)
   {
@@ -26,7 +30,7 @@ class Helpers
     return $formattedDate;
   }
 
-   public static function getTechPack($id, $fileName)
+  public static function getTechPack($id, $fileName)
   {
     $lastAddedFileName = StyleMaster::where('id', $id)->orderBy('created_at', 'desc')->value('tech_pack');
     $path = url('techPack/' . $id . '/' . $lastAddedFileName);
@@ -35,7 +39,7 @@ class Helpers
 
   public static function getSamplePhoto($id, $fileName)
   {
-	  
+
     $path = url('samplePhoto/' . $id . '/' . $fileName);
     return $path;
   }

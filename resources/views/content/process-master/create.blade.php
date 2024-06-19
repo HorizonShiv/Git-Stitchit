@@ -50,46 +50,68 @@
                                     value="{{ old('processName') }}" placeholder="Process Name" />
                             </div>
                         </div>
-                      <div class="col-md-6">
-                        <div class="col-md-12">
-                          <div class="container">
-                            <div class="row">
-                              <label class="form-label" for="demographicName">Connect With</label>
-                              <div class="col-md-2">
-                                <div class="form-check form-check-primary">
-                                  <input type="radio" id="customColorRadio1" name="processConnect" class="form-check-input" value="cad">
-                                  <label class="form-check-label" for="customColorRadio1">CAD</label>
-                                </div>
-                              </div>
-                              <div class="col-md-2">
-                                <div class="form-check form-check-secondary">
-                                  <input type="radio" id="customColorRadio2"  name="processConnect" class="form-check-input" value="cutting">
-                                  <label class="form-check-label" for="customColorRadio2">Cutting</label>
-                                </div>
-                              </div>
-                              <div class="col-md-2">
-                                <div class="form-check form-check-success">
-                                  <input type="radio" id="customColorRadio3"  name="processConnect" class="form-check-input" value="stitching">
-                                  <label class="form-check-label" for="customColorRadio3">Stitching</label>
-                                </div>
-                              </div>
-                              <div class="col-md-2">
-                                <div class="form-check form-check-danger">
-                                  <input type="radio" id="customColorRadio4" name="processConnect" class="form-check-input" value="washing">
-                                  <label class="form-check-label" for="customColorRadio4">Washing</label>
-                                </div>
-                              </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <div class="container">
+                                    <div class="row">
+                                        <label class="form-label" for="demographicName">Connect With</label>
+                                        <div class="col-md-2">
+                                            <div class="form-check form-check-primary">
+                                                <input type="radio" id="customColorRadio1" name="processConnect"
+                                                    class="form-check-input" value="cad">
+                                                <label class="form-check-label" for="customColorRadio1">CAD</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-check form-check-secondary">
+                                                <input type="radio" id="customColorRadio2" name="processConnect"
+                                                    class="form-check-input" value="cutting">
+                                                <label class="form-check-label" for="customColorRadio2">Cutting</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-check form-check-success">
+                                                <input type="radio" id="customColorRadio3" name="processConnect"
+                                                    class="form-check-input" value="stitching">
+                                                <label class="form-check-label" for="customColorRadio3">Stitching</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-check form-check-danger">
+                                                <input type="radio" id="customColorRadio4" name="processConnect"
+                                                    class="form-check-input" value="washing">
+                                                <label class="form-check-label" for="customColorRadio4">Washing</label>
+                                            </div>
+                                        </div>
 
-                              <div class="col-md-2">
-                                <div class="form-check form-check-secondary">
-                                  <input type="radio" id="customColorRadio5" name="processConnect" class="form-check-input" value="packing">
-                                  <label class="form-check-label" for="customColorRadio5">Packing</label>
+                                        <div class="col-md-2">
+                                            <div class="form-check form-check-secondary">
+                                                <input type="radio" id="customColorRadio5" name="processConnect"
+                                                    class="form-check-input" value="packing">
+                                                <label class="form-check-label" for="customColorRadio5">Packing</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <div class="form-check form-check-info">
+                                                <input type="radio" id="customColorRadio6" name="processConnect"
+                                                    class="form-check-input" value="wearhouse">
+                                                <label class="form-check-label" for="customColorRadio6">Wearhouse</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <div class="form-check form-check-warning mt-2">
+                                                <input type="radio" id="customColorRadio7" name="processConnect"
+                                                    class="form-check-input" value="service">
+                                                <label class="form-check-label" for="customColorRadio7">Service</label>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
-                              </div>
                             </div>
-                          </div>
                         </div>
-                      </div>
                     </div>
                     <br>
                     <div class="row px-0 mt-3">

@@ -192,18 +192,47 @@
                                         class="responsive table table-striped table-bordered table-hover mt-5">
                                         <thead>
                                             <tr>
-                                                <td scope="row" colspan="8" class="text-center">STYLE FEATURES
+                                                <td scope="row" class="text-center">STYLE FEATURES
                                                 </td>
                                             </tr>
                                         </thead>
                                         <tr>
 
-                                            <td scope="row" colspan="8" class="text-center">
-                                                @if (!empty($StyleData->sample_photo))
+                                            <td scope="row" class="text-center">
+                                                {{-- @if (!empty($StyleData->sample_photo))
                                                     <img width="1024px" height="400px"
                                                         src="{{ Helper::getSamplePhoto($StyleData->id, $StyleData->sample_photo) }}"
                                                         alt="">
-                                                @endif
+                                                @endif --}}
+                                                <div class="row">
+                                                    @if (!empty($SamplePhotos))
+                                                        @php
+                                                            $count = count($SamplePhotos);
+                                                            $colClass = 'col-md-4'; // Default class for 3 or more photos
+                                                            $width = '250px'; // Default width for 3 or more photos
+                                                            $height = '150px'; // Default height for 3 or more photos
+                                                            if ($count === 1) {
+                                                                $colClass = 'col-md-12';
+                                                                $width = '400px';
+                                                                $height = '300px';
+                                                            } elseif ($count === 2) {
+                                                                $colClass = 'col-md-6';
+                                                                $width = '250px';
+                                                                $height = '150px';
+                                                            }
+                                                        @endphp
+
+                                                        @foreach ($SamplePhotos as $name => $photos)
+                                                            <div class="{{ $colClass }} mt-3">
+                                                                <img width="{{ $width }}"
+                                                                    height="{{ $height }}" src="{{ $photos }}"
+                                                                    alt="">
+                                                            </div>
+                                                        @endforeach
+                                                    @endif
+                                                </div>
+
+
                                             </td>
 
                                         </tr>
@@ -214,7 +243,8 @@
                                         class="responsive table table-striped table-bordered table-hover mt-5">
                                         <thead>
                                             <tr>
-                                                <td scope="row" colspan="5" class="text-center"><b>PROCESSES</b></td>
+                                                <td scope="row" colspan="5" class="text-center"><b>PROCESSES</b>
+                                                </td>
 
                                             </tr>
                                             <tr>
@@ -232,7 +262,7 @@
                                                     <tr>
                                                         <td scope="row" class="text-center">{{ $num }}</td>
                                                         <td scope="row" class="text-center">
-                                                            {{ $PlaningOrderProcesses->ProcessMaster->name }}</td>
+                                                            {{ $PlaningOrderProcesses->ProcessMaster->name ?? '' }}</td>
                                                         <td scope="row" class="text-center">
                                                             {{ $PlaningOrderProcesses->qty }}</td>
                                                         <td scope="row" class="text-center"></td>
