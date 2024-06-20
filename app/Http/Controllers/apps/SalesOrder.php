@@ -330,7 +330,7 @@ class SalesOrder extends Controller
         $secondIndex++;
       }
       $htmlTable .= '
-      <td rowspan="2"><input type="text" value="' . $colorwiseQtyData . '" name="Total[' . $firstIndex . ']" class="form-control" style="height: 78px;"></td></tr>';
+      <td rowspan="2"><input type="text" value="' . $colorwiseQtyData . '" onkeyup="checkTotalQty()" name="Total[' . $firstIndex . ']" class="form-control" style="height: 78px;"></td></tr>';
 
       $htmlTable .= '<tr>';
       $secondIndex = 0;

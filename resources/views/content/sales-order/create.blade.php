@@ -123,7 +123,9 @@
                         <form id="StyleInformation">
                             <div class="content-header mb-4">
                                 <h4 class="mb-1">Style Information</h4>
+
                             </div>
+
                             <div class="row">
 
                                 <div class="col-md-6">
@@ -177,11 +179,10 @@
                                         {!! $requiredHtml !!}
                                         <div class="input-group">
                                             <input required type="number" id="TotalQty" name="TotalQty"
-                                                class="form-control" placeholder="Total Qty" />
+                                                class="form-control" placeholder="Total Qty" readonly />
                                             <div class="input-group-append">
                                                 <button class="btn btn-outline-primary waves-effect"
-                                                    data-bs-toggle="modal" data-bs-target="#addSize"
-                                                    onclick="checkTotalQty();" type="button">Add
+                                                    data-bs-toggle="modal" data-bs-target="#addSize" type="button">Add
                                                 </button>
 
                                             </div>
@@ -411,7 +412,7 @@
 
 
 
-    <div class="modal fade ValidateModelForTotalQty" id="" tabindex="-1" aria-hidden="true">
+    <div class="modal fade ValidateModelForTotalQty" id="addSize" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-simple modal-edit-user modal-dialog-scrollable">
             <div class="modal-content p-3 p-md-5">
                 <div class="modal-body">
@@ -564,7 +565,7 @@
         inputLast.style.height = '78px'; // Fixing the height
         inputLast.className = 'form-control';
         inputLast.setAttribute('data-row', rowCount);
-        inputLast.setAttribute('onkeyup', `updateQuantities(${rowCount})`);
+        inputLast.setAttribute('onkeyup', `updateQuantities(${rowCount}), checkTotalQty()`);
         dataCellLast.rowSpan = 2;
         dataCellLast.appendChild(inputLast);
 
@@ -631,7 +632,7 @@
                     newparameterIndex++;
                 } else if (input.name.includes('Total')) {
                     input.name = `Total[${tbodyCount+1}]`;
-                    input.setAttribute('onkeyup', `updateQuantities(${tbodyCount+1})`);
+                    input.setAttribute('onkeyup', `updateQuantities(${tbodyCount+1}), checkTotalQty()`);
                 }
             });
         });
@@ -659,15 +660,24 @@
     }
 
     function checkTotalQty() {
-        var totalQty = $('#TotalQty').val();
+        var qtyData = [];
 
-        if (totalQty == '') {
-            toastr.error("Please Enter Total Qty");
-        } else {
-            $('.ValidateModelForTotalQty').attr('id', 'addSize');
-            $('#addSize').modal('show');
-            $('.ValidateModelForTotalQty').removeAttr('id');
-        }
+        // Initialize total sum variable
+        $('#TotalQty').val(0);
+        var totalSum = 0;
+
+        // Collect values from Total fields and calculate the sum
+        $('input[name^="Total"]').each(function() {
+            var value = parseFloat($(this).val()) || 0; // Convert value to a float, default to 0 if NaN
+            totalSum += value;
+        });
+
+        // Output the total sum
+        console.log("Total Sum of All Totals:", totalSum);
+
+
+        $('#TotalQty').val(totalSum);
+
     }
 
     function AddNewStyleData() {
@@ -727,8 +737,6 @@
             }
             if (modelRate === '') {
                 var errorMessage = 'Rate should be filled out';
-
-
             }
         } else {
             $.ajax({
@@ -923,6 +931,9 @@
             qtyData[index].push(value);
         });
 
+
+
+
         $('input[name^="parameterIds"]').each(function() {
             var name = $(this).attr('name');
             var value = $(this).val();
@@ -1030,6 +1041,7 @@
             if (totalQty === '') {
                 var errorMessage = 'Qty should be filled out';
                 toastr.error(errorMessage);
+                $('#addSize').modal('show');
             }
             if (totalQty !== '') {
                 if (parameterDataSaperation === '') {

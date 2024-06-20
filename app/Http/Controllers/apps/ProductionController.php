@@ -1088,6 +1088,10 @@ class ProductionController extends Controller
   {
     return view('content.packaging.list');
   }
+  public function packagingPrint()
+  {
+    return view('content.packaging.print-packaging');
+  }
 
   public function getStylePackaging(Request $request)
   {

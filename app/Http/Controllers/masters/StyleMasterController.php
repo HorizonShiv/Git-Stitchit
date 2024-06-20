@@ -747,7 +747,7 @@ class StyleMasterController extends Controller
       if (!empty($request->sample_photo)) {
         foreach ($request->sample_photo as $SamplePhoto) {
           $this->validate(request(), [
-            'sample_photo.*' => 'mimes:xlsx,xls,jpg,png,jpeg|max:2048',
+            'SamplePhoto' => 'mimes:xlsx,xls,jpg,png,jpeg|max:2048',
           ]);
           $file = $SamplePhoto;
           $file_name = $file->getClientOriginalName();

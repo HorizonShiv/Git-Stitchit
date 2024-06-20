@@ -116,6 +116,7 @@
                                 class="btn btn-icon btn-label-primary mx-2 waves-effect">
                                 <i class="ti ti-edit mx-2 ti-sm"></i>
                             </a>
+
                             <a href="http://127.0.0.1:8000/planning/create/148/135/view"
                                 class="btn btn-icon btn-label-info mx-2 waves-effect">
                                 <i class="ti ti-eye mx-2 ti-sm"></i>

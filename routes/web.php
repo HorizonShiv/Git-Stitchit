@@ -452,6 +452,7 @@ Route::middleware([CheckStatus::class])->group(function () {
   Route::post('/getStylePackaging', [ProductionController::class, 'getStylePackaging'])->name('getStylePackaging');
   Route::post('/getColorPackaging', [ProductionController::class, 'getColorPackaging'])->name('getColorPackaging');
   Route::post('/getSizeWiseDataPackaging', [ProductionController::class, 'getSizeWiseDataPackaging'])->name('getSizeWiseDataPackaging');
+  // Route::get('/packagingPrint', [ProductionController::class, 'packagingPrint'])->name('packagingPrint');
 
   //Admin issue manage
   Route::resource('issue', IssueManageController::class);
